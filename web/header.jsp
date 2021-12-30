@@ -28,7 +28,7 @@
             <li><a href = "mainPage.jsp">Main Page</a></li>
             <li><a href = "readerRegistration.jsp">Reader Registration</a></li>
             <li><a href = "mainPage.jsp">Return Of Books</a></li>
-            <li><a href = "mainPage.jsp">Book Registration</a></li>
+            <li><a href = "bookRegistration.jsp">Book Registration</a></li>
             <li><a href = "mainPage.jsp">Issuance of Books</a></li>
             <li>
             <form id = "formReaderList" method="get" action="/Servlet">
