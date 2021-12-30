@@ -22,35 +22,42 @@
         <div>
             <div class = "group">
                 <label>Surname</label>
-                <input class = "input" name = "surname" type = "text" required/>
+                <input id = "inpSurname" class = "input" name = "surname" type = "text" required/>
+                <div id = "mistakeSurname"></div>
             </div>
             <div class = "group">
                 <label>Name</label>
-                <input class = "input" name = "name" type = "text" required/>
+                <input id = "inpName" class = "input" name = "name" type = "text" required/>
+                <div id = "mistakeName"></div>
             </div>
             <div class = "group">
                 <label>Patronymic</label>
-                <input class = "input" name = "patronymic" type = "text"/>
+                <input id = "inpPatronymic" class = "input" name = "patronymic" type = "text"/>
+                <div id = "mistakePatronymic"></div>
             </div>
         </div>
         <div>
             <div class = "group">
                 <label>Birthday</label>
-                <input class = "input" name = "birthday" type = "date" required/>
+                <input id = "inpBirthday" class = "input" name = "birthday" type = "date" required/>
+                <div id = "mistakeBirthday"></div>
             </div>
             <div class = "group">
                 <label>Email</label>
-                <input class = "input" name = "email" type = "text"  required/>
+                <input id = "inpEmail" class = "input" name = "email" type = "text"  required/>
+                <div id = "mistakeEmail"></div>
             </div>
             <div class = "group">
                 <label>Passport-id</label>
-                <input class = "input" name = "passport-id" type = "text"/>
+                <input id = "inpPassport-id" class = "input" name = "passport-id" type = "text"/>
+                <div id = "mistakePassport-id"></div>
             </div>
         </div>
         <div>
             <div class = "group">
                 <label>Address</label>
-                <input class = "input" name = "address" type = "text"/>
+                <input id = "inpAddress" class = "input" name = "address" type = "text"/>
+                <div id = "mistakeAddress"></div>
                 <input class = "input" id = "btn" type = "submit" value="Confirm"/>
             </div>
         </div>
