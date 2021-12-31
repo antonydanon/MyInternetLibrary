@@ -1,10 +1,10 @@
 package com.ita.u1.internetLibrary.model;
 
 public class Author {
-    String name;
-    String surname;
-    String patronymic;
-    byte[] photoOfAuthor;
+    private String name;
+    private String surname;
+    private String patronymic;
+    private byte[] photoOfAuthor;
 
     public Author(String name, String surname, String patronymic, byte[] photoOfAuthor) {
         this.name = name;

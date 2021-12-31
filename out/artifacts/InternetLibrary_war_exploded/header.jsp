@@ -25,13 +25,17 @@
         </div>
         <ul>
             <li>Menu</li>
-            <li><a href = "mainPage.jsp">Main Page</a></li>
+            <li>
+            <form method="get" action="/Servlet">
+                <input id = "btnGetMainPage" type = "submit" name = "btnGetMainPage" value="Main Page"/>
+            </form>
+            </li>
             <li><a href = "readerRegistration.jsp">Reader Registration</a></li>
             <li><a href = "mainPage.jsp">Return Of Books</a></li>
             <li><a href = "bookRegistration.jsp">Book Registration</a></li>
             <li><a href = "mainPage.jsp">Issuance of Books</a></li>
             <li>
-            <form id = "formReaderList" method="get" action="/Servlet">
+            <form method="get" action="/Servlet">
                 <input id = "btnGetReadersList" type = "submit" name = "btnGetListReaders" value="List Of Readers"/>
             </form>
             </li>

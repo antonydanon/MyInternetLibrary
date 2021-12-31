@@ -1,25 +1,18 @@
 package com.ita.u1.internetLibrary.dao;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 
 import com.ita.u1.internetLibrary.model.Reader;
 
 public class ReaderDAO {
-    static final String user = "postgres";
-    static final String password = "anton";
-    static final String url = "jdbc:postgresql://127.0.0.1:5432/library";
 
     static public void updateTableOfReaders(Reader reader) throws SQLException {
-        String sqlQuery = "";
-        try {
-            Class.forName("org.postgresql.Driver");
-            System.out.println("подключилось");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Connector.loadDriver();
 
-        try(Connection conn = DriverManager.getConnection(url, user, password)){
+        String sqlQuery = "";
+        try(Connection conn = Connector.getConnection()){
             Statement statement = conn.createStatement();
             sqlQuery = "INSERT INTO readers (surname, name, patronymic, passport_id, email, address, birthday) VALUES" +
                     " ('"+reader.getSurname()+"', '"+reader.getName()+
@@ -33,14 +26,10 @@ public class ReaderDAO {
     }
 
     static public void selectAllReaders(List<Reader> listOfReaders) throws SQLException {
+        Connector.loadDriver();
+
         String sqlQuery = "SELECT surname, name, birthday, address, email FROM readers";
-        try {
-            Class.forName("org.postgresql.Driver");
-            System.out.println("подключилось");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try(Connection conn = DriverManager.getConnection(url, user, password);
+        try(Connection conn = Connector.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlQuery);
         ) {
@@ -49,9 +38,8 @@ public class ReaderDAO {
                         null, null, rs.getString("email"),rs.getString("address"),
                         rs.getString("birthday")));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
-
 }

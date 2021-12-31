@@ -1,7 +1,7 @@
 package com.ita.u1.internetLibrary.model;
 
 public class PhotoOfBook {
-    byte[] photo;
+    private byte[] photo;
 
     public PhotoOfBook(byte[] photo) {
         this.photo = photo;

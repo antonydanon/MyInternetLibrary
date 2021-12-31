@@ -49,7 +49,8 @@ body{
     padding: 25px 10px 10px 10px;
 }
 
-#btnGetReadersList{
+
+#btnGetMainPage, #btnGetReadersList{
     font-size: 1.0em;
     list-style: none;
     color: #dfe5eb;
@@ -59,7 +60,7 @@ body{
     border: none;
 }
 
-#btnGetReadersList:hover {
+#sidebar ul li form input:hover {
     color: #b7e4fc;
     cursor: pointer;
 }

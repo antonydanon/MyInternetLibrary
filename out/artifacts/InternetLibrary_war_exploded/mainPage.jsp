@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Main Page</title>
@@ -15,6 +16,27 @@
     <script type="text/javascript" src = "js/mainPage.js"></script>
 </head>
 <body>
-<div id='header'></div>
+    <div id='header'></div>
+    <h1>list of books</h1>
+    <table>
+        <tr>
+            <th>Russian title of the book</th>
+            <th>Genre</th>
+            <th>Year of publication</th>
+            <th>Count of instances</th>
+            <th>Available</th>
+        </tr>
+
+        <c:forEach items="${listOfBooks}" var="book" >
+            <tr>
+                <td>${book.russianNameOfBook}</td>
+                <td>${book.genres.get(0)}</td>
+                <td>${book.yearOfPublication}</td>
+                <td>${book.countOfInstances}</td>
+                <td>${book.countOfInstancesAvailable}</td>
+            </tr>
+        </c:forEach>
+
+    </table>
 </body>
 </html>
