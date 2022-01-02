@@ -2,7 +2,7 @@ $(document).ready(function(){
     $('#header').load('header.jsp');
 });
 
-function validate(regex, input){
+/*function validate(regex, input){
     return regex.test(input);
 }
 
@@ -63,5 +63,5 @@ window.onload = function() {
             notValid(inpBirthday, mistakeBirthday, 'Incorrect date');
         }
     }
-}
+}*/
 

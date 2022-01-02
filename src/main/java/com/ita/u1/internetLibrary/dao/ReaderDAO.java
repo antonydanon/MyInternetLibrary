@@ -2,6 +2,7 @@ package com.ita.u1.internetLibrary.dao;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.ita.u1.internetLibrary.model.Reader;
@@ -36,7 +37,7 @@ public class ReaderDAO {
             while(rs.next()){
                 listOfReaders.add(new Reader(rs.getString("surname"), rs.getString("name"),
                         null, null, rs.getString("email"),rs.getString("address"),
-                        rs.getString("birthday")));
+                        LocalDate.parse( rs.getString("birthday"))));
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();

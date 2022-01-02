@@ -1,5 +1,7 @@
 package com.ita.u1.internetLibrary.model;
 
+import java.time.LocalDate;
+
 public class Reader {
     private String surname;
     private String name;
@@ -7,9 +9,9 @@ public class Reader {
     private String passport_id;
     private String email;
     private String address;
-    private String birthday;
+    private LocalDate birthday;
 
-    public Reader(String surname, String name, String patronymic, String passport_id, String email, String address, String birthday) {
+    public Reader(String surname, String name, String patronymic, String passport_id, String email, String address, LocalDate birthday) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -43,7 +45,7 @@ public class Reader {
         return address;
     }
 
-    public String getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
@@ -71,7 +73,7 @@ public class Reader {
         this.address = address;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 }
