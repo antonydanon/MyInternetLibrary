@@ -31,7 +31,7 @@
             </form>
             </li>
             <li><a href = "readerRegistration.jsp">Reader Registration</a></li>
-            <li><a href = "mainPage.jsp">Return Of Books</a></li>
+            <li><a href = "returnOfBooks.jsp">Return Of Books</a></li>
             <li><a href = "bookRegistration.jsp">Book Registration</a></li>
             <li><a href = "bookDistributions.jsp">Book Distributions</a></li>
             <li>

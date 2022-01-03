@@ -83,12 +83,12 @@ public class OrderDAO {
         }
     }
 
-    public static void makeInstancesOfBooksUnavailable(Connection connection, List<Order> orderListOfReader){
+    public static void makeInstancesOfBooksUnavailable(Connection connection, List<Order> orderListOfReader, int readerId){
         String sqlQuery = "";
         for(var order : orderListOfReader) {
             try {
                 Statement statement = connection.createStatement();
-                sqlQuery = "update instances set access = false where instance_id = " + order.getInstanceId();
+                sqlQuery = "update instances set access = false, reader_id = " + readerId  + " where instance_id = " + order.getInstanceId();
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
                 System.out.println("error");

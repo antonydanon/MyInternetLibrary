@@ -45,7 +45,7 @@ public class OrderManagement {
         return titlesOfBooks;
     }
 
-    private static float getDiscount(List<PriceOfBook> pricesOfBooks){
+    public static float getDiscount(List<PriceOfBook> pricesOfBooks){
         if(pricesOfBooks.size() > 4)
             return Constants.discount15percent;
         if(pricesOfBooks.size() > 2)
@@ -93,7 +93,7 @@ public class OrderManagement {
         if(OrderDAO.readerReturnedBooks(connection, readerId)) {
             List<Order> orderListOfReader = OrderDAO.getInstanceIdForAllTitlesOfBook(connection, titlesOfBooks, readerId);
             OrderDAO.loadOrderInDB(connection, orderListOfReader);
-            OrderDAO.makeInstancesOfBooksUnavailable(connection, orderListOfReader);
+            OrderDAO.makeInstancesOfBooksUnavailable(connection, orderListOfReader, readerId);
         } else {
             System.out.println("This reader still didn't return books!");
         }

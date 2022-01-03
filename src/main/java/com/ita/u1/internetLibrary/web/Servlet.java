@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+
+import com.ita.u1.internetLibrary.service.BookReturningManagement;
 import org.apache.commons.io.IOUtils;
 import org.postgresql.core.Utils;
 
@@ -58,6 +60,9 @@ public class Servlet extends HttpServlet {
             byte[] bytes = fileContent.readAllBytes();
             BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));*/
         }
+        if(params.containsKey("returnBooks")){
+            makeReturnOfBooks(request, response);
+        }
     }
 
     protected void addNewReader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -94,6 +99,12 @@ public class Servlet extends HttpServlet {
     protected void registerOrdersOfReaders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         OrderManagement.registerOrderOfReader(request.getParameter("passportID"), request);
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    protected void makeReturnOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BookReturningManagement.returningOfBooks(request.getParameter("passportID"));
+        RequestDispatcher dispatcher = request.getRequestDispatcher("returnOfBooks.jsp");
         dispatcher.forward(request, response);
     }
 
