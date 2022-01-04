@@ -2,15 +2,13 @@ package com.ita.u1.internetLibrary.model;
 
 public class Author {
     private String name;
-    private String surname;
-    private String patronymic;
     private byte[] photoOfAuthor;
+    private int authorId;
 
-    public Author(String name, String surname, String patronymic, byte[] photoOfAuthor) {
+    public Author(String name, byte[] photoOfAuthor, int authorId) {
         this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
         this.photoOfAuthor = photoOfAuthor;
+        this.authorId = authorId;
     }
 
     public String getName() {
@@ -21,27 +19,19 @@ public class Author {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
     public byte[] getPhotoOfAuthor() {
         return photoOfAuthor;
     }
 
     public void setPhotoOfAuthor(byte[] photoOfAuthor) {
         this.photoOfAuthor = photoOfAuthor;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 }

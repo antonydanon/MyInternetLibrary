@@ -11,7 +11,7 @@ public class Connector {
     static public void loadDriver(){
         try{
             Class.forName("org.postgresql.Driver");
-            System.out.println("подключилось");
+            System.out.println("connection");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

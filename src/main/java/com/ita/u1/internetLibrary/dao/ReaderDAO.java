@@ -21,7 +21,7 @@ public class ReaderDAO {
                     "', '"+reader.getAddress()+"', '"+reader.getBirthday()+"')";
             statement.executeUpdate(sqlQuery);
         } catch (Exception ex){
-            System.out.println("ошибка");
+            System.out.println("error");
             System.out.println(ex.getMessage());
         }
     }

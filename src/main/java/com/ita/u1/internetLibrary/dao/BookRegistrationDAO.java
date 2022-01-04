@@ -1,5 +1,6 @@
 package com.ita.u1.internetLibrary.dao;
 
+import com.ita.u1.internetLibrary.model.Author;
 import com.ita.u1.internetLibrary.model.Genre;
 
 import java.sql.Connection;
@@ -93,6 +94,44 @@ public class BookRegistrationDAO {
                 Statement statement = connection.createStatement();
                 sqlQuery = "insert into photos (photo, fk_photo_books) " +
                         "values(" + photo + "," + bookId +")";
+                statement.executeUpdate(sqlQuery);
+            } catch (Exception ex) {
+                System.out.println("error");
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public static void putAuthorsOfBookIntoDB(Connection connection, List<Author> authors){
+        String sqlQuery = "";
+        for(var author : authors){
+            sqlQuery = "SELECT name, author_id FROM authors WHERE name = '" + author.getName() + "'";
+            try(Statement stmt = connection.createStatement();
+            ) {
+                ResultSet resultSet = stmt.executeQuery(sqlQuery);
+                if(resultSet.next()){
+                    author.setAuthorId(resultSet.getInt("author_id"));
+                } else{
+                    sqlQuery = "insert into authors (photo, name) " +
+                            "values(" + author.getPhotoOfAuthor() + ",'" + author.getName() +"')";
+                    stmt.executeUpdate(sqlQuery);
+                    sqlQuery = "SELECT MAX(author_id) FROM authors";
+                    resultSet = stmt.executeQuery(sqlQuery);
+                    author.setAuthorId(resultSet.getInt("max"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void makeConnectionBetweenBooksAndAuthors(Connection connection, int bookId, List<Author> authors){
+        String sqlQuery = "";
+        for (var author : authors) {
+            try {
+                Statement statement = connection.createStatement();
+                sqlQuery = "insert into books_authors " +
+                        "values (" + bookId + "," + author.getAuthorId() + ")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
                 System.out.println("error");

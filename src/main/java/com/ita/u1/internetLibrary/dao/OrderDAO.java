@@ -77,7 +77,7 @@ public class OrderDAO {
                         "values('" + LocalDate.now() + "'," + order.getInstanceId() +"," + order.getReaderId() + ")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
-                System.out.println("ошибка");
+                System.out.println("error");
                 System.out.println(ex.getMessage());
             }
         }

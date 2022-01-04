@@ -2,6 +2,7 @@ package com.ita.u1.internetLibrary.service;
 
 import com.ita.u1.internetLibrary.dao.BookRegistrationDAO;
 import com.ita.u1.internetLibrary.dao.Connector;
+import com.ita.u1.internetLibrary.model.Author;
 import com.ita.u1.internetLibrary.model.Genre;
 
 import javax.servlet.ServletException;
@@ -36,6 +37,9 @@ public class BookRegistrationManagement {
             BookRegistrationDAO.createInstancesInDB(connection, Integer.parseInt(request.getParameter("countOfInstances")), bookId);
             List<byte[]> photosOfBook = getAllPhotoOfBook(request);
             BookRegistrationDAO.putPhotosOfBookIntoDB(connection, bookId, photosOfBook);
+            List<Author> authorsForBook = getAllAuthorsForBook(request);
+            BookRegistrationDAO.putAuthorsOfBookIntoDB(connection, authorsForBook);
+            BookRegistrationDAO.makeConnectionBetweenBooksAndAuthors(connection, bookId, authorsForBook);
             Connector.closeConnection(connection);
         } catch (SQLException | IOException | ServletException e) {
             e.printStackTrace();
@@ -83,5 +87,26 @@ public class BookRegistrationManagement {
             }
         }
         return photos;
+    }
+
+    private static List<Author> getAllAuthorsForBook(HttpServletRequest request) throws ServletException, IOException {
+        List<Author> authors = new ArrayList<>();
+        String authorParam = "author";
+        String photoParam = "photoOfAuthor";
+        for (int num = 1; num <= 5; num++) {
+            if(!request.getParameter(authorParam + num).equals("")){
+                Part filePart = request.getPart(authorParam + num);
+                if(filePart != null){
+                    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                    InputStream fileContent = filePart.getInputStream();
+                    byte[] photo = fileContent.readAllBytes();
+                    authors.add(new Author(request.getParameter(authorParam + num), photo, 0));
+                } else{
+                    authors.add(new Author(request.getParameter(authorParam + num), null, 0));
+
+                }
+            }
+        }
+        return authors;
     }
 }
