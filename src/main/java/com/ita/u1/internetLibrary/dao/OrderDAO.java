@@ -73,7 +73,7 @@ public class OrderDAO {
         for(var order : orderListOfReader) {
             try {
                 Statement statement = connection.createStatement();
-                sqlQuery = "insert into orders (order_date, fk_orders_instances, fk_orders_readers)\n" +
+                sqlQuery = "insert into orders (order_date, fk_orders_instances, fk_orders_readers) " +
                         "values('" + LocalDate.now() + "'," + order.getInstanceId() +"," + order.getReaderId() + ")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {

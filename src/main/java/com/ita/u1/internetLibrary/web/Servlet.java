@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-import com.ita.u1.internetLibrary.service.BookReturningManagement;
+import com.ita.u1.internetLibrary.service.*;
 import org.apache.commons.io.IOUtils;
 import org.postgresql.core.Utils;
 
@@ -23,9 +23,6 @@ import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.model.Book;
 import com.ita.u1.internetLibrary.model.Reader;
 import com.ita.u1.internetLibrary.dao.ReaderDAO;
-import com.ita.u1.internetLibrary.service.BookManagement;
-import com.ita.u1.internetLibrary.service.OrderManagement;
-import com.ita.u1.internetLibrary.service.ReaderManagement;
 
 
 @MultipartConfig
@@ -53,7 +50,8 @@ public class Servlet extends HttpServlet {
         if(params.containsKey("name")) {
             addNewReader(request, response);
         }
-        if(params.containsKey("btnSubmitFile")) {
+        if(params.containsKey("makeRegistrationOfBook")) {
+            makeRegistrationOfBook(request, response);
             /*Part filePart = request.getPart("file");
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             InputStream fileContent = filePart.getInputStream();
@@ -105,6 +103,12 @@ public class Servlet extends HttpServlet {
     protected void makeReturnOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BookReturningManagement.returningOfBooks(request.getParameter("passportID"));
         RequestDispatcher dispatcher = request.getRequestDispatcher("returnOfBooks.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    protected void makeRegistrationOfBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BookRegistrationManagement.registrationOfBook(request);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("bookRegistration.jsp");
         dispatcher.forward(request, response);
     }
 
