@@ -1,28 +1,15 @@
 package com.ita.u1.internetLibrary.web;
 
-import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
-
 import com.ita.u1.internetLibrary.service.*;
-import org.apache.commons.io.IOUtils;
-import org.postgresql.core.Utils;
-
-import com.ita.u1.internetLibrary.dao.BookDAO;
-import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.model.Book;
 import com.ita.u1.internetLibrary.model.Reader;
-import com.ita.u1.internetLibrary.dao.ReaderDAO;
+
 
 
 @MultipartConfig
@@ -52,11 +39,6 @@ public class Servlet extends HttpServlet {
         }
         if(params.containsKey("makeRegistrationOfBook")) {
             makeRegistrationOfBook(request, response);
-            /*Part filePart = request.getPart("file");
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            InputStream fileContent = filePart.getInputStream();
-            byte[] bytes = fileContent.readAllBytes();
-            BufferedImage img = ImageIO.read(new ByteArrayInputStream(bytes));*/
         }
         if(params.containsKey("returnBooks")){
             makeReturnOfBooks(request, response);
@@ -111,5 +93,4 @@ public class Servlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookRegistration.jsp");
         dispatcher.forward(request, response);
     }
-
 }

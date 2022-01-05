@@ -9,12 +9,8 @@ import com.ita.u1.internetLibrary.model.PriceOfBook;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningManagement {
@@ -37,9 +33,9 @@ public class BookReturningManagement {
     }
 
     private static int getFinalPrice(Connection connection, int readerId){
-        ZonedDateTime orderDate = null;
-        List<Integer> listOfIdOfInstances = BookReturningDAO.getAllIdOfInstancesAndOrderDateInOrderTableOfDB(connection, readerId, orderDate);
+        List<Integer> listOfIdOfInstances = BookReturningDAO.getAllIdOfInstancesInOrderTableOfDB(connection, readerId);
         List<PriceOfBook> listOfPricesOfBooks = BookReturningDAO.getAllPricesOfOrder(connection, listOfIdOfInstances);
+        GregorianCalendar orderDate = BookReturningDAO.getOrderDate(connection, readerId);
         long countOfDays = getCountOfDaysBetweenDates(orderDate);
         float discount = OrderManagement.getDiscount(listOfPricesOfBooks);
         int finalPrice = 0;
@@ -51,16 +47,13 @@ public class BookReturningManagement {
         return finalPrice;
     }
 
-    private static long getCountOfDaysBetweenDates(ZonedDateTime orderDate){
-        long countOfDays = 0;
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        /*LocalDate date = LocalDate.now();
-        Date returnDate = dateFormat.parse(date.getDayOfMonth()+"."+date.getMonthValue()+"."+date.getYear());
-        long milliseconds = returnDate.getTime() - orderDate.getTime();
-        countOfDays = (int) (milliseconds / (Constants.hours * Constants.minutes * Constants.seconds * Constants.milliseconds));*/
-        ZonedDateTime returnDate = ZonedDateTime.now();
-        Duration duration = Duration.between(orderDate, returnDate);
-        countOfDays = duration.toDays();
+    private static long getCountOfDaysBetweenDates(GregorianCalendar orderDate){
+        LocalDate retDate = LocalDate.now();
+        int year = retDate.getYear();
+        int month = retDate.getMonthValue();
+        int day = retDate.getDayOfMonth();
+        GregorianCalendar returnDate = new GregorianCalendar(year, month, day);
+        int countOfDays = (int) ((returnDate.getTimeInMillis()-orderDate.getTimeInMillis())/Constants.milliseconds/Constants.seconds/ Constants.minutes/Constants.hours);
         return countOfDays;
     }
 

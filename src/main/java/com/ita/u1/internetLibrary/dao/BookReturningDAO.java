@@ -1,26 +1,20 @@
 package com.ita.u1.internetLibrary.dao;
 
 import com.ita.u1.internetLibrary.model.PriceOfBook;
-import com.ita.u1.internetLibrary.model.Reader;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningDAO {
     public static void makePayment(Connection connection, int price, int readerId){
         String sqlQuery = "INSERT INTO book_returning (date_returning, price, fk_book_returning_readers)" +
-                " VALUES ('" + LocalDate.now() + "', " + price + ", + readerId +)";
+                " VALUES ('" + LocalDate.now() + "',"  + price + "," + readerId + ")";
         try{
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
@@ -45,29 +39,45 @@ public class BookReturningDAO {
         String sqlQuery = "DELETE FROM orders WHERE fk_orders_readers = " + readerId;
         try{
             Statement statement = connection.createStatement();
-            int rows = statement.executeUpdate(sqlQuery);
-            System.out.printf("%d row(s) deleted", rows);
+            statement.executeUpdate(sqlQuery);
         } catch(Exception ex){
             System.out.println("Connection failed...");
             System.out.println(ex);
         }
     }
 
-    public static List<Integer> getAllIdOfInstancesAndOrderDateInOrderTableOfDB(Connection connection, int readerId, ZonedDateTime orderDate) {
+    public static List<Integer> getAllIdOfInstancesInOrderTableOfDB(Connection connection, int readerId) {
         List<Integer> listOfIdOfInstances = new ArrayList<>();
-        String sqlQuery = "SELECT fk_orders_instances, order_date FROM orders WHERE fk_orders_readers = " + readerId;
+        String sqlQuery = "SELECT fk_orders_instances FROM orders WHERE fk_orders_readers = " + readerId;
         try(Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sqlQuery);
         ) {
             while(rs.next()){
                 listOfIdOfInstances.add(rs.getInt("fk_orders_instances"));
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                orderDate = ZonedDateTime.parse(rs.getString("order_date"), formatter);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return listOfIdOfInstances;
+    }
+
+    public static GregorianCalendar getOrderDate(Connection connection, int readerId){
+        GregorianCalendar orderDate = null;
+        String sqlQuery = "SELECT  order_date FROM orders WHERE fk_orders_readers = " + readerId;
+        try(Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlQuery);
+        ) {
+            while(rs.next()){
+                String date = rs.getString("order_date");
+                int year = Integer.parseInt(date.substring(0,4));
+                int month = Integer.parseInt(date.substring(5,7));
+                int day = Integer.parseInt(date.substring(8,10));
+                orderDate = new GregorianCalendar(year, month, day);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderDate;
     }
 
     public static List<PriceOfBook> getAllPricesOfOrder(Connection connection, List<Integer> listOfIdOfInstances){

@@ -1,13 +1,8 @@
 package com.ita.u1.internetLibrary.service;
 
-import com.ita.u1.internetLibrary.dao.BookDAO;
-import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.dao.ReaderDAO;
-import com.ita.u1.internetLibrary.model.Book;
 import com.ita.u1.internetLibrary.model.Reader;
 
-import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
