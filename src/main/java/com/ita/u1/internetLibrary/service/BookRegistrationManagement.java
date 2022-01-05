@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class BookRegistrationManagement {
             BookRegistrationDAO.putAuthorsOfBookIntoDB(connection, authorsForBook);
             BookRegistrationDAO.makeConnectionBetweenBooksAndAuthors(connection, bookId, authorsForBook);
             Connector.closeConnection(connection);
-        } catch (SQLException | IOException | ServletException e) {
+        } catch (IOException | ServletException e) {
             e.printStackTrace();
         }
     }

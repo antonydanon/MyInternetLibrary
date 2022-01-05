@@ -6,11 +6,10 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+
 import com.ita.u1.internetLibrary.service.*;
 import com.ita.u1.internetLibrary.model.Book;
 import com.ita.u1.internetLibrary.model.Reader;
-
-
 
 @MultipartConfig
 public class Servlet extends HttpServlet {
@@ -45,7 +44,7 @@ public class Servlet extends HttpServlet {
         }
     }
 
-    protected void addNewReader(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void addNewReader(HttpServletRequest request, HttpServletResponse response) throws IOException{
         Reader reader = new Reader(request.getParameter("surname"), request.getParameter("name"),
                 request.getParameter("patronymic"), request.getParameter("passport-id"),
                 request.getParameter("email"), request.getParameter("address"), LocalDate.parse(request.getParameter("birthday")));
@@ -69,7 +68,13 @@ public class Servlet extends HttpServlet {
 
     protected void getPriceAndDateForOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         LocalDate bookReturnDate = OrderManagement.getReturnDate();
-        int priceOfOrder = OrderManagement.getOrderPrice(request);
+        List<String> titlesOfBooks = new ArrayList<>();
+        titlesOfBooks.add(request.getParameter("firstBook"));
+        titlesOfBooks.add(request.getParameter("secondBook"));
+        titlesOfBooks.add(request.getParameter("thirdBook"));
+        titlesOfBooks.add(request.getParameter("fourthBook"));
+        titlesOfBooks.add(request.getParameter("fifthBook"));
+        int priceOfOrder = OrderManagement.getOrderPrice(titlesOfBooks);
         request.setAttribute("dateOfOrder", bookReturnDate);
         request.setAttribute("priceOfOrder", priceOfOrder);
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
@@ -77,7 +82,13 @@ public class Servlet extends HttpServlet {
     }
 
     protected void registerOrdersOfReaders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        OrderManagement.registerOrderOfReader(request.getParameter("passportID"), request);
+        List<String> titlesOfBooks = new ArrayList<>();
+        titlesOfBooks.add(request.getParameter("firstBook"));
+        titlesOfBooks.add(request.getParameter("secondBook"));
+        titlesOfBooks.add(request.getParameter("thirdBook"));
+        titlesOfBooks.add(request.getParameter("fourthBook"));
+        titlesOfBooks.add(request.getParameter("fifthBook"));
+        OrderManagement.registerOrderOfReader(request.getParameter("passportID"), titlesOfBooks);
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
         dispatcher.forward(request, response);
     }

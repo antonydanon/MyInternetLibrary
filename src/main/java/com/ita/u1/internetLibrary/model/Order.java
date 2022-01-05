@@ -1,7 +1,5 @@
 package com.ita.u1.internetLibrary.model;
 
-import java.time.LocalDate;
-
 public class Order {
     private int instanceId;
     private int readerId;

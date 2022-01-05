@@ -6,12 +6,8 @@ import com.ita.u1.internetLibrary.dao.OrderDAO;
 import com.ita.u1.internetLibrary.model.Order;
 import com.ita.u1.internetLibrary.model.PriceOfBook;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderManagement {
@@ -21,23 +17,12 @@ public class OrderManagement {
         return bookReturnDate;
     }
 
-    public static int getOrderPrice(HttpServletRequest request){
-        List<String> titlesOfBooks = getListOfOrders(request);
+    public static int getOrderPrice(List<String> titlesOfBooks){
         validationOfOrders(titlesOfBooks);
         List<PriceOfBook> pricesOfBooks = loadPricesOfBooksFromDB(titlesOfBooks);
         float discount = getDiscount(pricesOfBooks);
         int orderPrice = getSummaryPrice(discount, pricesOfBooks);
         return orderPrice;
-    }
-
-    private static List<String> getListOfOrders(HttpServletRequest request){
-        List<String> titlesOfBooks = new ArrayList<>();
-        titlesOfBooks.add(request.getParameter("firstBook"));
-        titlesOfBooks.add(request.getParameter("secondBook"));
-        titlesOfBooks.add(request.getParameter("thirdBook"));
-        titlesOfBooks.add(request.getParameter("fourthBook"));
-        titlesOfBooks.add(request.getParameter("fifthBook"));
-        return titlesOfBooks;
     }
 
     private static List<String> validationOfOrders(List<String> titlesOfBooks){
@@ -56,14 +41,10 @@ public class OrderManagement {
 
     private static List<PriceOfBook> loadPricesOfBooksFromDB(List<String> titlesOfBooks){
         List<PriceOfBook> pricesOfBooks = null;
-        try {
-            Connector.loadDriver();
-            Connection connection = Connector.getConnection();
-            pricesOfBooks = OrderDAO.getPricesFromDB(titlesOfBooks, connection);
-            Connector.closeConnection(connection);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        pricesOfBooks = OrderDAO.getPricesFromDB(titlesOfBooks, connection);
+        Connector.closeConnection(connection);
         return pricesOfBooks;
     }
 
@@ -76,16 +57,11 @@ public class OrderManagement {
         return summaryPrice;
     }
 
-    public static void registerOrderOfReader(String passportID, HttpServletRequest request){
-        List<String> titlesOfBooks = getListOfOrders(request);
-        try {
-            Connector.loadDriver();
-            Connection connection = Connector.getConnection();
-            orderRegistration(connection, passportID, titlesOfBooks);
-            Connector.closeConnection(connection);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+    public static void registerOrderOfReader(String passportID, List<String> titlesOfBooks){
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        orderRegistration(connection, passportID, titlesOfBooks);
+        Connector.closeConnection(connection);
     }
 
     private static void orderRegistration(Connection connection, String passportID, List<String> titlesOfBooks){

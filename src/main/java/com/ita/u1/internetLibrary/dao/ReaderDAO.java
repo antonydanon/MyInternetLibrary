@@ -9,38 +9,35 @@ import com.ita.u1.internetLibrary.model.Reader;
 
 public class ReaderDAO {
 
-    static public void updateTableOfReaders(Reader reader) throws SQLException {
-        Connector.loadDriver();
+    static public void updateTableOfReaders(Reader reader){
+        String sqlQuery = "INSERT INTO readers (surname, name, patronymic, passport_id, email, address, birthday) VALUES" +
+                " ('"+reader.getSurname()+"', '"+reader.getName()+
+                "', '"+reader.getPatronymic()+"', '"+reader.getPassport_id()+"', '"+reader.getEmail()+
+                "', '"+reader.getAddress()+"', '"+reader.getBirthday()+"')";
 
-        String sqlQuery = "";
-        try(Connection conn = Connector.getConnection()){
-            Statement statement = conn.createStatement();
-            sqlQuery = "INSERT INTO readers (surname, name, patronymic, passport_id, email, address, birthday) VALUES" +
-                    " ('"+reader.getSurname()+"', '"+reader.getName()+
-                    "', '"+reader.getPatronymic()+"', '"+reader.getPassport_id()+"', '"+reader.getEmail()+
-                    "', '"+reader.getAddress()+"', '"+reader.getBirthday()+"')";
+        Connector.loadDriver();
+        try(Connection connection = Connector.getConnection()){
+            Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
-        } catch (Exception ex){
-            System.out.println("error");
-            System.out.println(ex.getMessage());
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
         }
     }
 
-    static public void selectAllReaders(List<Reader> listOfReaders) throws SQLException {
-        Connector.loadDriver();
-
+    static public void selectAllReaders(List<Reader> listOfReaders){
         String sqlQuery = "SELECT surname, name, birthday, address, email FROM readers";
-        try(Connection conn = Connector.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery);
+        Connector.loadDriver();
+        try(Connection connection = Connector.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery)
         ) {
-            while(rs.next()){
-                listOfReaders.add(new Reader(rs.getString("surname"), rs.getString("name"),
-                        null, null, rs.getString("email"),rs.getString("address"),
-                        LocalDate.parse( rs.getString("birthday"))));
+            while(resultSet.next()){
+                listOfReaders.add(new Reader(resultSet.getString("surname"), resultSet.getString("name"),
+                        null, null, resultSet.getString("email"),resultSet.getString("address"),
+                                  LocalDate.parse( resultSet.getString("birthday"))));
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

@@ -8,24 +8,21 @@ import java.util.List;
 
 public class BookDAO {
 
-    static public void selectTitleAndYearForBooks(List<Book> listOfBooks, Connection connection) throws SQLException{
-
+    static public void selectTitleAndYearForBooks(List<Book> listOfBooks, Connection connection){
         String sqlQuery = "SELECT book_id, russian_name, year_of_publication FROM books";
-        try(Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlQuery)
-        ) {
-            while(rs.next()){
-                listOfBooks.add(new Book(rs.getString("russian_name"), null, null,
-                        rs.getInt("year_of_publication"),null, rs.getInt("book_id")));
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery)){
+            while(resultSet.next()){
+                listOfBooks.add(new Book(resultSet.getString("russian_name"), null, null,
+                        resultSet.getInt("year_of_publication"),null, resultSet.getInt("book_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
-    static public void selectGenreForBooks(List<Book> listOfBooks, Connection connection) throws SQLException{
+    static public void selectGenreForBooks(List<Book> listOfBooks, Connection connection){
         Connector.loadDriver();
-
         int bookId = 0;
         String sqlQuery = "";
 
@@ -36,24 +33,20 @@ public class BookDAO {
                     "JOIN books_genres ON books.book_id = books_genres.book_id " +
                     "JOIN genres ON genres.genre_id = books_genres.genre_id " +
                     "where books.book_id = " + bookId;
-            try(Statement stmt = connection.createStatement();
-                ResultSet rs = stmt.executeQuery(sqlQuery)
-            ) {
-                while(rs.next()){
-                    genres.add(rs.getString("genre"));
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery)){
+                while(resultSet.next()){
+                    genres.add(resultSet.getString("genre"));
                 }
-
                 book.setGenres(genres);
-
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    static public void selectCountOfInstancesForBooks(List<Book> listOfBooks, Connection connection) throws SQLException{
+    static public void selectCountOfInstancesForBooks(List<Book> listOfBooks, Connection connection){
         Connector.loadDriver();
-
         int bookId = 0;
         String sqlQueryForCountInstances = "";
         String sqlQueryForCountAccessInstances = "";
@@ -69,24 +62,22 @@ public class BookDAO {
                     "ON instances.fk_instances_books = books.book_id " +
                     "WHERE book_id = " + bookId + " and access = true";
 
-            try(Statement stmt = connection.createStatement();
-                ResultSet resultSetCountInstances = stmt.executeQuery(sqlQueryForCountInstances)
-            ) {
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSetCountInstances = statement.executeQuery(sqlQueryForCountInstances)){
                 while(resultSetCountInstances.next()){
                     book.setCountOfInstances(resultSetCountInstances.getInt("count"));
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
 
-            try(Statement stmt = connection.createStatement();
-                ResultSet resultSetCountAccessInstances = stmt.executeQuery(sqlQueryForCountAccessInstances)
-            ) {
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSetCountAccessInstances = statement.executeQuery(sqlQueryForCountAccessInstances)){
                 while(resultSetCountAccessInstances.next()){
                     book.setCountOfInstancesAvailable(resultSetCountAccessInstances.getInt("count"));
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
     }

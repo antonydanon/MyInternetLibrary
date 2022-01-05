@@ -11,35 +11,38 @@ public class Connector {
     static public void loadDriver(){
         try{
             Class.forName("org.postgresql.Driver");
-            System.out.println("connection");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
-    public static Connection getConnection() throws SQLException, IOException {
-
+    public static Connection getConnection(){
         InputStream in = Connector.class.getClassLoader().getResourceAsStream("database.properties");
         Properties props = new Properties();
-
         try {
             props.load(in);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         String url = props.getProperty("url");
         String username = props.getProperty("username");
         String password = props.getProperty("password");
 
-        return DriverManager.getConnection(url, username, password);
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return connection;
     }
 
     public static void closeConnection(Connection connection){
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

@@ -6,9 +6,7 @@ import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.dao.OrderDAO;
 import com.ita.u1.internetLibrary.model.PriceOfBook;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -17,19 +15,14 @@ public class BookReturningManagement {
     public static void returningOfBooks(String passportID){
         int readerId = 0;
         int price = 0;
-        try {
-            Connector.loadDriver();
-            Connection connection = Connector.getConnection();
-            readerId = OrderDAO.getReaderId(connection, passportID);
-            price = getFinalPrice(connection, readerId);
-            BookReturningDAO.makePayment(connection, price, readerId);
-            BookReturningDAO.makeInstancesAvailable(connection, readerId);
-            BookReturningDAO.deleteOrders(connection, readerId);
-            Connector.closeConnection(connection);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
-
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        readerId = OrderDAO.getReaderId(connection, passportID);
+        price = getFinalPrice(connection, readerId);
+        BookReturningDAO.makePayment(connection, price, readerId);
+        BookReturningDAO.makeInstancesAvailable(connection, readerId);
+        BookReturningDAO.deleteOrders(connection, readerId);
+        Connector.closeConnection(connection);
     }
 
     private static int getFinalPrice(Connection connection, int readerId){
