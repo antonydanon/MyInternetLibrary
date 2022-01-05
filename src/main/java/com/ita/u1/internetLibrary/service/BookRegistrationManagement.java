@@ -28,7 +28,7 @@ public class BookRegistrationManagement {
                                                                   request.getParameter("originalTitle"),
                                                                   Integer.parseInt(request.getParameter("price")),
                                                                   Integer.parseInt(request.getParameter("pricePerDay")),
-                                                                  Integer.parseInt(request.getParameter("dateOfPublishing")),
+                                                                  Integer.parseInt(request.getParameter("yearOfPublishing")),
                                                                   LocalDate.parse(request.getParameter("dateOfRegistration")),
                                                                   Integer.parseInt(request.getParameter("countOfPages")), connection);
             int bookId = BookRegistrationDAO.getBookId(connection);
@@ -76,14 +76,16 @@ public class BookRegistrationManagement {
 
     private static List<byte[]> getAllPhotoOfBook(HttpServletRequest request) throws ServletException, IOException {
         List<byte[]> photos = new ArrayList<>();
-        String nameOfParam = "photoOfAuthor";
+        String nameOfParam = "photoOfBook";
         for(int numOfPhotos = 1; numOfPhotos <= 5; numOfPhotos++) {
             Part filePart = request.getPart(nameOfParam + numOfPhotos);
             if(filePart != null){
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                 InputStream fileContent = filePart.getInputStream();
                 byte[] photo = fileContent.readAllBytes();
-                photos.add(photo);
+                if(photo.length != 0){
+                    photos.add(photo);
+                }
             }
         }
         return photos;
@@ -95,15 +97,16 @@ public class BookRegistrationManagement {
         String photoParam = "photoOfAuthor";
         for (int num = 1; num <= 5; num++) {
             if(!request.getParameter(authorParam + num).equals("")){
-                Part filePart = request.getPart(authorParam + num);
+                Part filePart = request.getPart(photoParam + num);
                 if(filePart != null){
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                     InputStream fileContent = filePart.getInputStream();
                     byte[] photo = fileContent.readAllBytes();
-                    authors.add(new Author(request.getParameter(authorParam + num), photo, 0));
-                } else{
-                    authors.add(new Author(request.getParameter(authorParam + num), null, 0));
-
+                    if(photo.length != 0) {
+                        authors.add(new Author(request.getParameter(authorParam + num), photo, 0));
+                    } else {
+                        authors.add(new Author(request.getParameter(authorParam + num), null, 0));
+                    }
                 }
             }
         }

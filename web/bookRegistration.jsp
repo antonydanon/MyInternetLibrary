@@ -45,7 +45,7 @@
         <input type="file" name="photoOfBook4" />
         <input type="file" name="photoOfBook5" />
         <input type="number" name="pricePerDay" />
-        <input type="date" name="dateOfPublishing" />
+        <input type="number" name="yearOfPublishing" />
         <input type="date" name="dateOfRegistration" />
         <input type="number" name="countOfPages" />
         <input type="submit" name="makeRegistrationOfBook"/>

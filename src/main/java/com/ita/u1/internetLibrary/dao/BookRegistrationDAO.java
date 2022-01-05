@@ -14,7 +14,7 @@ import java.util.List;
 public class BookRegistrationDAO {
     public static void insertDateAboutBookIntoBooksTable(String russianTitle, String originalTitle, int price, int pricePerDay, int yearPublishing, LocalDate dateRegistration, int countOfPages, Connection connection){
         String sqlQuery = "INSERT INTO books (russian_name, original_name, price, price_per_day, year_of_publication, registration_date, number_of_pages)" +
-                " VALUES ('" + russianTitle + "', '" + originalTitle + "'," + price + "," + pricePerDay + ",'" + yearPublishing + "'," + dateRegistration + "," + countOfPages + ")";
+                " VALUES ('" + russianTitle + "', '" + originalTitle + "'," + price + "," + pricePerDay + "," + yearPublishing + ",'" + dateRegistration + "'," + countOfPages + ")";
         try{
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
@@ -62,8 +62,8 @@ public class BookRegistrationDAO {
         for (var genreId : genresId){
             try {
                 Statement statement = connection.createStatement();
-                sqlQuery = "insert into books_genres " +
-                        "values (" + bookId + "," + genreId + ")";
+                sqlQuery = "INSERT INTO books_genres " +
+                        "VALUES (" + bookId + "," + genreId + ")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
                 System.out.println("error");
@@ -77,8 +77,8 @@ public class BookRegistrationDAO {
         for (int count = 0; count < countOfInstance; count++) {
             try{
                 Statement statement = connection.createStatement();
-                sqlQuery = "insert into instances (access, fk_instances_books) " +
-                        "values('true'," + bookId +")";
+                sqlQuery = "INSERT INTO instances (access, fk_instances_books) " +
+                        "VALUES('true'," + bookId +")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
                 System.out.println("error");
@@ -92,8 +92,12 @@ public class BookRegistrationDAO {
         for(var photo : photosOfBook){
             try{
                 Statement statement = connection.createStatement();
-                sqlQuery = "insert into photos (photo, fk_photo_books) " +
-                        "values(" + photo + "," + bookId +")";
+                sqlQuery = "INSERT INTO photo (photo, fk_photo_books) VALUES ('{";
+                for (var partOfPhoto : photo) {
+                    sqlQuery += partOfPhoto + ",";
+                }
+                sqlQuery = sqlQuery.substring(0,sqlQuery.length()-2);
+                sqlQuery = sqlQuery + "}', " + bookId + ")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
                 System.out.println("error");
@@ -112,12 +116,18 @@ public class BookRegistrationDAO {
                 if(resultSet.next()){
                     author.setAuthorId(resultSet.getInt("author_id"));
                 } else{
-                    sqlQuery = "insert into authors (photo, name) " +
-                            "values(" + author.getPhotoOfAuthor() + ",'" + author.getName() +"')";
+                    sqlQuery = "INSERT INTO authors (photo, name) VALUES ('{";
+                    for (var partOfPhoto: author.getPhotoOfAuthor()){
+                        sqlQuery += partOfPhoto + ",";
+                    }
+                    sqlQuery = sqlQuery.substring(0,sqlQuery.length()-2);
+                    sqlQuery = sqlQuery + "}', '" + author.getName() +"')";
                     stmt.executeUpdate(sqlQuery);
                     sqlQuery = "SELECT MAX(author_id) FROM authors";
                     resultSet = stmt.executeQuery(sqlQuery);
-                    author.setAuthorId(resultSet.getInt("max"));
+                    while(resultSet.next()) {
+                        author.setAuthorId(resultSet.getInt("max"));
+                    }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -130,8 +140,8 @@ public class BookRegistrationDAO {
         for (var author : authors) {
             try {
                 Statement statement = connection.createStatement();
-                sqlQuery = "insert into books_authors " +
-                        "values (" + bookId + "," + author.getAuthorId() + ")";
+                sqlQuery = "INSERT INTO books_authors " +
+                        "VALUES (" + bookId + "," + author.getAuthorId() + ")";
                 statement.executeUpdate(sqlQuery);
             } catch (Exception ex) {
                 System.out.println("error");
