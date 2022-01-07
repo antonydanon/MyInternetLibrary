@@ -17,6 +17,22 @@ public class OrderManagement {
         return bookReturnDate;
     }
 
+    public static List<String> getTitlesOfBooks(List<Integer> booksId){
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        List<String> titlesOfBooks = OrderDAO.getTitlesOfBooksFromDB(booksId, connection);
+        Connector.closeConnection(connection);
+        return titlesOfBooks;
+    }
+
+    public static String getPassportId(int readerId){
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        String passportId = OrderDAO.getPassportIdFromDB(readerId, connection);
+        Connector.closeConnection(connection);
+        return passportId;
+    }
+
     public static int getOrderPrice(List<String> titlesOfBooks){
         validationOfOrders(titlesOfBooks);
         List<PriceOfBook> pricesOfBooks = loadPricesOfBooksFromDB(titlesOfBooks);

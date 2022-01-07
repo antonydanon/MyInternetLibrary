@@ -25,7 +25,7 @@ public class ReaderDAO {
     }
 
     static public void selectAllReaders(List<Reader> listOfReaders){
-        String sqlQuery = "SELECT surname, name, birthday, address, email FROM readers";
+        String sqlQuery = "SELECT readers_id, surname, name, birthday, address, email FROM readers";
         Connector.loadDriver();
         try(Connection connection = Connector.getConnection();
             Statement statement = connection.createStatement();
@@ -34,7 +34,27 @@ public class ReaderDAO {
             while(resultSet.next()){
                 listOfReaders.add(new Reader(resultSet.getString("surname"), resultSet.getString("name"),
                         null, null, resultSet.getString("email"),resultSet.getString("address"),
-                                  LocalDate.parse( resultSet.getString("birthday"))));
+                                  LocalDate.parse( resultSet.getString("birthday")), resultSet.getInt("readers_id")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    static public void selectAllReadersWithoutDebts(List<Reader> listOfReaders){
+        String sqlQuery = "SELECT readers_id, surname, name, birthday, address, email from readers " +
+                "WHERE readers.readers_id NOT IN (SELECT readers_id FROM readers " +
+                "                                            JOIN instances " +
+                "                                            ON readers_id = reader_id AND access = 'false')";
+        Connector.loadDriver();
+        try(Connection connection = Connector.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery)
+        ) {
+            while(resultSet.next()){
+                listOfReaders.add(new Reader(resultSet.getString("surname"), resultSet.getString("name"),
+                        null, null, resultSet.getString("email"),resultSet.getString("address"),
+                        LocalDate.parse( resultSet.getString("birthday")), resultSet.getInt("readers_id")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

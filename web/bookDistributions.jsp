@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Book Distributions</title>
@@ -19,17 +20,18 @@
     <h1>Book Distributions</h1>
     <form method="get" action="/Servlet">
         <label>Passport-id of reader</label>
-        <input type="text" name="passportID"/>
+        <input type="text" name="passportID" class="orderParams" value="${passportId}"/>
         <label>Books for reader</label>
-        <input type="text" name="firstBook"/>
-        <input type="text" name="secondBook"/>
-        <input type="text" name="thirdBook"/>
-        <input type="text" name="fourthBook"/>
-        <input type="text" name="fifthBook"/>
+        <c:forEach items="${titlesOfBooks}" var="title" >
+            <input type="text" name="book" class="orderParams" value="${title}"/>
+        </c:forEach>
         <input type="submit" name="request" value="Get price and date"/>
-        <label>${dateOfOrder}</label>
-        <label>${priceOfOrder}</label>
-        <input type="submit" name="request" value="Sent request">
+        <label>Return Date</label>
+        <input type="text" class="orderParams" value="${returnDateOfOrder}">
+        <label>Price</label>
+        <input type="text" class="orderParams" value="${priceOfOrder}">
+        <input type="submit" name="requestOnOrder" value="Sent request">
+        <input type="hidden" name="titles" value="${titlesOfBooks}"/>
     </form>
 </body>
 </html>

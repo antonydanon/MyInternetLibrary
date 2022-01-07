@@ -23,11 +23,17 @@ public class Servlet extends HttpServlet {
         if(params.containsKey("btnGetMainPage")) {
             loadListOfBooks(request, response);
         }
-        if(params.containsKey("request") && params.get("request")[0].equals("Get price and date")){
-            getPriceAndDateForOrder(request, response);
-        }
-        if(params.containsKey("request") && params.get("request")[0].equals("Sent request")) {
+        if(params.containsKey("requestOnOrder")) {
             registerOrdersOfReaders(request, response);
+        }
+        if(params.containsKey("btnGetListReadersWithoutDebts")){
+            getListOfReadersWithoutDebts(request, response);
+        }
+        if(params.containsKey("btnGetListOfAvailableBooks")){
+            getListOfAvailableBooks(request, response);
+        }
+        if(params.containsKey("btnGetWindowOfOrderRegistration")){
+            openWindowOfOrderRegistration(request, response);
         }
     }
 
@@ -48,7 +54,7 @@ public class Servlet extends HttpServlet {
     protected void addNewReader(HttpServletRequest request, HttpServletResponse response) throws IOException{
         Reader reader = new Reader(request.getParameter("surname"), request.getParameter("name"),
                 request.getParameter("patronymic"), request.getParameter("passport-id"),
-                request.getParameter("email"), request.getParameter("address"), LocalDate.parse(request.getParameter("birthday")));
+                request.getParameter("email"), request.getParameter("address"), LocalDate.parse(request.getParameter("birthday")), 0);
         ReaderManagement.addNewReaderInDB(reader);
         response.sendRedirect("readerRegistration.jsp");
     }
@@ -67,19 +73,40 @@ public class Servlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    protected void getPriceAndDateForOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        LocalDate bookReturnDate = OrderManagement.getReturnDate();
-        List<String> titlesOfBooks = getTitlesOfBooks(request);
-        int priceOfOrder = OrderManagement.getOrderPrice(titlesOfBooks);
-        request.setAttribute("dateOfOrder", bookReturnDate);
-        request.setAttribute("priceOfOrder", priceOfOrder);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
-        dispatcher.forward(request, response);
-    }
-
     protected void registerOrdersOfReaders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<String> titlesOfBooks = getTitlesOfBooks(request);
         OrderManagement.registerOrderOfReader(request.getParameter("passportID"), titlesOfBooks);
+        getListOfReadersWithoutDebts(request, response);
+    }
+
+    protected void getListOfReadersWithoutDebts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Reader> listOfReadersWithoutDebts = ReaderManagement.loadListOfReadersWithoutDebtsFromDB();
+        request.setAttribute("listOfReadersWithoutDebts", listOfReadersWithoutDebts);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listOfReadersWithoutDebts.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    protected void getListOfAvailableBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String, String[]> params = request.getParameterMap();
+        int readerId = Integer.parseInt(params.get("choice")[0]);
+        List<Book> listOfAvailableBooks = BookManagement. getListOfAvailableBooksFromDB();
+        request.setAttribute("listOfAvailableBooks", listOfAvailableBooks);
+        request.setAttribute("readerId", readerId);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listOfAvailableBooks.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    protected void openWindowOfOrderRegistration(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int readerId = Integer.parseInt(request.getParameter("readerId"));
+        List<Integer> listOfBooksId = getAllBooksId(request);
+        List<String> titlesOfBooks = OrderManagement.getTitlesOfBooks(listOfBooksId);
+        String passportId = OrderManagement.getPassportId(readerId);
+        LocalDate bookReturnDate = OrderManagement.getReturnDate();
+        int priceOfOrder = OrderManagement.getOrderPrice(titlesOfBooks);
+        request.setAttribute("returnDateOfOrder", bookReturnDate);
+        request.setAttribute("priceOfOrder", priceOfOrder);
+        request.setAttribute("passportId", passportId);
+        request.setAttribute("titlesOfBooks", titlesOfBooks);
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
         dispatcher.forward(request, response);
     }
@@ -108,12 +135,9 @@ public class Servlet extends HttpServlet {
     }
 
     private List<String> getTitlesOfBooks(HttpServletRequest request){
+        Map<String, String[]> params = request.getParameterMap();
         List<String> titlesOfBooks = new ArrayList<>();
-        titlesOfBooks.add(request.getParameter("firstBook"));
-        titlesOfBooks.add(request.getParameter("secondBook"));
-        titlesOfBooks.add(request.getParameter("thirdBook"));
-        titlesOfBooks.add(request.getParameter("fourthBook"));
-        titlesOfBooks.add(request.getParameter("fifthBook"));
+        Collections.addAll(titlesOfBooks,params.get("book"));
         return titlesOfBooks;
     }
 
@@ -181,5 +205,14 @@ public class Servlet extends HttpServlet {
             }
         }
         return authors;
+    }
+
+    private List<Integer> getAllBooksId(HttpServletRequest request){
+        Map<String, String[]> params = request.getParameterMap();
+        List<Integer> listOfBooksId = new ArrayList<>();
+        for (var bookId : params.get("choiceOfBook")) {
+            listOfBooksId.add(Integer.parseInt(bookId));
+        }
+        return listOfBooksId;
     }
 }

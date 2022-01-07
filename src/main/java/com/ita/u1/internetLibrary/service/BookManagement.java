@@ -19,4 +19,15 @@ public class BookManagement {
         Connector.closeConnection(connection);
         return listOfBooks;
     }
+
+    public static List<Book> getListOfAvailableBooksFromDB(){
+        List<Book> listOfBooks = loadListOfBooksFromDB();
+        List<Book> listOfAvailableBooks = new ArrayList<>();
+        for (var book : listOfBooks) {
+            if(book.getCountOfInstancesAvailable() > 0){
+                listOfAvailableBooks.add(book);
+            }
+        }
+        return listOfAvailableBooks;
+    }
 }
