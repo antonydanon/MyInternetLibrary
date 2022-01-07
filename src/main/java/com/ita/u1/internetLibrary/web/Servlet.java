@@ -35,6 +35,13 @@ public class Servlet extends HttpServlet {
         if(params.containsKey("btnGetWindowOfOrderRegistration")){
             openWindowOfOrderRegistration(request, response);
         }
+        if(params.containsKey("btnGetWindowOfBookReturning")){
+            openWindowOfBookReturning(request, response);
+        }
+        if(params.containsKey("btnGetReadersListWithDebts")){
+            getListOfReadersWithDebts(request, response);
+        }
+
     }
 
     @Override
@@ -86,6 +93,13 @@ public class Servlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    protected void getListOfReadersWithDebts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Reader> listOfReadersWithDebts = ReaderManagement.loadListOfReadersWithDebtsFromDB();
+        request.setAttribute("listOfReadersWithDebts", listOfReadersWithDebts);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listOfReadersWithDebts.jsp");
+        dispatcher.forward(request, response);
+    }
+
     protected void getListOfAvailableBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String[]> params = request.getParameterMap();
         int readerId = Integer.parseInt(params.get("choice")[0]);
@@ -111,10 +125,24 @@ public class Servlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    protected void makeReturnOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BookReturningManagement.returningOfBooks(request.getParameter("passportID"));
+    protected void openWindowOfBookReturning(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String, String[]> params = request.getParameterMap();
+        int readerId = Integer.parseInt(params.get("choice")[0]);
+        String passportId = OrderManagement.getPassportId(readerId);
+        List<String> titlesOfBooks = BookReturningManagement.getTitlesOfBook(readerId);
+        int price =  BookReturningManagement.getFinalPrice(readerId);
+        LocalDate returnDate = LocalDate.now();
+        request.setAttribute("passportId", passportId);
+        request.setAttribute("titlesOfBooks", titlesOfBooks);
+        request.setAttribute("price", price);
+        request.setAttribute("returnDate", returnDate);
         RequestDispatcher dispatcher = request.getRequestDispatcher("returnOfBooks.jsp");
         dispatcher.forward(request, response);
+    }
+
+    protected void makeReturnOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BookReturningManagement.returningOfBooks(request.getParameter("passportID"), Integer.parseInt(request.getParameter("priceForReturningBooks")));
+        getListOfReadersWithDebts(request, response);
     }
 
     protected void makeRegistrationOfBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

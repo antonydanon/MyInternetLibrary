@@ -22,4 +22,10 @@ public class ReaderManagement {
         ReaderDAO.selectAllReadersWithoutDebts(listOfReadersWithoutDebts);
         return listOfReadersWithoutDebts;
     }
+
+    public static List<Reader> loadListOfReadersWithDebtsFromDB(){
+        List<Reader> listOfReadersWithDebts = new ArrayList<>();
+        ReaderDAO.selectAllReadersWithDebts(listOfReadersWithDebts);
+        return listOfReadersWithDebts;
+    }
 }

@@ -50,7 +50,7 @@ body{
 }
 
 
-#btnGetMainPage, #btnGetReadersList, #btnGetReadersListWithoutDebts{
+#btnGetMainPage, #btnGetReadersList, #btnGetReadersListWithoutDebts, #btnGetReadersListWithDebts{
     font-size: 1.0em;
     list-style: none;
     color: #dfe5eb;

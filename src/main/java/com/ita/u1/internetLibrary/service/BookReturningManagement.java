@@ -12,20 +12,28 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningManagement {
-    public static void returningOfBooks(String passportID){
+    public static void returningOfBooks(String passportID, int price){
         int readerId = 0;
-        int price = 0;
         Connector.loadDriver();
         Connection connection = Connector.getConnection();
         readerId = OrderDAO.getReaderId(connection, passportID);
-        price = getFinalPrice(connection, readerId);
         BookReturningDAO.makePayment(connection, price, readerId);
         BookReturningDAO.makeInstancesAvailable(connection, readerId);
         BookReturningDAO.deleteOrders(connection, readerId);
         Connector.closeConnection(connection);
     }
 
-    private static int getFinalPrice(Connection connection, int readerId){
+    public static List<String> getTitlesOfBook(int readerId){
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        List<String> titlesOfBooks = BookReturningDAO.getTitlesOfBookFromDB(readerId, connection);
+        Connector.closeConnection(connection);
+        return titlesOfBooks;
+    }
+
+    public static int getFinalPrice(int readerId){
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
         List<Integer> listOfIdOfInstances = BookReturningDAO.getAllIdOfInstancesInOrderTableOfDB(connection, readerId);
         List<PriceOfBook> listOfPricesOfBooks = BookReturningDAO.getAllPricesOfOrder(connection, listOfIdOfInstances);
         GregorianCalendar orderDate = BookReturningDAO.getOrderDate(connection, readerId);
@@ -37,6 +45,7 @@ public class BookReturningManagement {
         }
         finalPrice *= (1-discount);
         finalPrice += getPenalty(countOfDays, finalPrice);
+        Connector.closeConnection(connection);
         return finalPrice;
     }
 

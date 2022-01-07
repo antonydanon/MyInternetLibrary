@@ -22,6 +22,20 @@ public class BookReturningDAO{
         }
     }
 
+    public static List<String> getTitlesOfBookFromDB(int readerId, Connection connection){
+        List<String> titlesOfBooks = new ArrayList<>();
+        String sqlQuery = "SELECT original_name FROM books JOIN instances ON books.book_id = instances.fk_instances_books WHERE access = 'false' AND reader_id = " +  readerId;
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery)){
+            while(resultSet.next()){
+                titlesOfBooks.add(resultSet.getString("original_name"));
+            }
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return titlesOfBooks;
+    }
+
     public static void makeInstancesAvailable(Connection connection, int readerId){
         String sqlQuery = "UPDATE instances SET access = 'true' WHERE reader_id = " + readerId;
         try(Statement statement = connection.createStatement()){

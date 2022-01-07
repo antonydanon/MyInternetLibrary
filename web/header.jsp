@@ -31,9 +31,13 @@
             </form>
             </li>
             <li><a href = "readerRegistration.jsp">Reader Registration</a></li>
-            <li><a href = "returnOfBooks.jsp">Return Of Books</a></li>
+            <li><%--<a href = "returnOfBooks.jsp">Return Of Books</a>--%>
+                <form method="get" action="/Servlet">
+                    <input id = "btnGetReadersListWithDebts" type = "submit" name = "btnGetReadersListWithDebts" value="Return Of Books"/>
+                </form>
+            </li>
             <li><a href = "bookRegistration.jsp">Book Registration</a></li>
-            <li><%--<a href = "bookDistributions.jsp">Book Distributions</a>--%>
+            <li>
                 <form method="get" action="/Servlet">
                     <input id = "btnGetReadersListWithoutDebts" type = "submit" name = "btnGetListReadersWithoutDebts" value="Book Distributions"/>
                 </form>

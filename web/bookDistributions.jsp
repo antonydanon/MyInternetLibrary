@@ -20,16 +20,15 @@
     <h1>Book Distributions</h1>
     <form method="get" action="/Servlet">
         <label>Passport-id of reader</label>
-        <input type="text" name="passportID" class="orderParams" value="${passportId}"/>
+        <input type="text" name="passportID"  value="${passportId}"/>
         <label>Books for reader</label>
         <c:forEach items="${titlesOfBooks}" var="title" >
-            <input type="text" name="book" class="orderParams" value="${title}"/>
+            <input type="text" name="book" value="${title}"/>
         </c:forEach>
-        <input type="submit" name="request" value="Get price and date"/>
         <label>Return Date</label>
-        <input type="text" class="orderParams" value="${returnDateOfOrder}">
+        <input type="text"  value="${returnDateOfOrder}">
         <label>Price</label>
-        <input type="text" class="orderParams" value="${priceOfOrder}">
+        <input type="text"  value="${priceOfOrder}">
         <input type="submit" name="requestOnOrder" value="Sent request">
         <input type="hidden" name="titles" value="${titlesOfBooks}"/>
     </form>

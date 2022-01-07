@@ -1,0 +1,65 @@
+*{
+    margin:0;
+    padding: 0;
+    outline: 0;
+}
+
+table{
+    left: 20%;
+    margin: 20px auto;
+    width: 60%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    box-shadow: 0 2px 15px rgba(64,64,64,.7);
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+td, th{
+    padding: 15px 20px;
+    text-align: center;
+
+
+}
+th{
+    background-color: #b7e4fc;
+    color: #fafafa;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+    text-transform: uppercase;
+
+}
+
+tr{
+    width: 100%;
+    background-color: #fafafa;
+    font-family: 'Montserrat', sans-serif;
+}
+
+tr:nth-child(even){
+    background-color: #eeeeee;
+}
+
+h1{
+    margin-top: 20px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#btnGetWindowOfBookReturning{
+    font-size: 1.0em;
+    list-style: none;
+    color: black;
+    font-family: 'Raleway', sans-serif;
+    height: 30px;
+    background: #dd636e;
+    border: none;
+    border-radius: 10px;
+
+}
+
+#btnGetWindowOfBookReturning:hover{
+    background: #b7e4fc;
+    cursor: pointer;
+}
