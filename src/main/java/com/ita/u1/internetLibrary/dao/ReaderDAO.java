@@ -1,6 +1,5 @@
 package com.ita.u1.internetLibrary.dao;
 
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -8,6 +7,36 @@ import java.util.List;
 import com.ita.u1.internetLibrary.model.Reader;
 
 public class ReaderDAO {
+
+    static public boolean haveNotSamePassportId(String passportId, Connection connection){
+        boolean isNotSamePassportId = true;
+        String sqlQuery = "SELECT passport_id FROM readers WHERE passport_id = '" + passportId + "'";
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery)
+        ) {
+            if(resultSet.next()){
+                isNotSamePassportId = false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return isNotSamePassportId;
+    }
+
+    static public boolean haveNotSameEmail(String email, Connection connection){
+        boolean isNotSameEmail = true;
+        String sqlQuery = "SELECT email FROM readers WHERE email = '" + email + "'";
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery)
+        ) {
+            if(resultSet.next()){
+                isNotSameEmail = false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return isNotSameEmail;
+    }
 
     static public void updateTableOfReaders(Reader reader){
         String sqlQuery = "INSERT INTO readers (surname, name, patronymic, passport_id, email, address, birthday) VALUES" +

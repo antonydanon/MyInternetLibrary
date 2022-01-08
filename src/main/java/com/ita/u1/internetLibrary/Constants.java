@@ -11,4 +11,6 @@ public class Constants {
     public static int minutes = 60;
     public static int seconds = 60;
     public static int milliseconds = 1000;
+
+    public static int emailMaxLength = 100;
 }

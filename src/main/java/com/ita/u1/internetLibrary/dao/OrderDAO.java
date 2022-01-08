@@ -31,19 +31,19 @@ public class OrderDAO {
         return pricesOfBooks;
     }
 
-    public static String getPassportIdFromDB(int readerId, Connection connection){
-        String passportId = "";
-        String sqlQuery = "SELECT passport_id FROM readers WHERE readers_id = " + readerId + ";";
+    public static String getEmailFromDB(int readerId, Connection connection){
+        String email = "";
+        String sqlQuery = "SELECT email FROM readers WHERE readers_id = " + readerId + ";";
         try(Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery)){
             if(resultSet.next()){
-                passportId = resultSet.getString("passport_id");
+                email = resultSet.getString("email");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return passportId;
+        return email;
     }
 
     public static List<String> getTitlesOfBooksFromDB(List<Integer> booksId, Connection connection){
@@ -64,8 +64,8 @@ public class OrderDAO {
         return titlesOfBooks;
     }
 
-    public static int getReaderId(Connection connection, String passportID){
-        String sqlQuery = "SELECT readers_id FROM readers WHERE passport_id = '" + passportID + "'";
+    public static int getReaderId(Connection connection, String email){
+        String sqlQuery = "SELECT readers_id FROM readers WHERE email = '" + email + "'";
         int readerId = 0;
 
         try(Statement statement = connection.createStatement();

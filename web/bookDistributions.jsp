@@ -20,7 +20,7 @@
     <h1>Book Distributions</h1>
     <form method="get" action="/Servlet">
         <label>Passport-id of reader</label>
-        <input type="text" name="passportID"  value="${passportId}"/>
+        <input type="text" name="email"  value="${email}"/>
         <label>Books for reader</label>
         <c:forEach items="${titlesOfBooks}" var="title" >
             <input type="text" name="book" value="${title}"/>

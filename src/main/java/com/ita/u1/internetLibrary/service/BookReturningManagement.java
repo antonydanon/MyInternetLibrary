@@ -12,11 +12,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningManagement {
-    public static void returningOfBooks(String passportID, int price){
+    public static void returningOfBooks(String email, int price){
         int readerId = 0;
         Connector.loadDriver();
         Connection connection = Connector.getConnection();
-        readerId = OrderDAO.getReaderId(connection, passportID);
+        readerId = OrderDAO.getReaderId(connection, email);
         BookReturningDAO.makePayment(connection, price, readerId);
         BookReturningDAO.makeInstancesAvailable(connection, readerId);
         BookReturningDAO.deleteOrders(connection, readerId);

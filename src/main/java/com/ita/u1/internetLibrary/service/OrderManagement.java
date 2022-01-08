@@ -25,12 +25,12 @@ public class OrderManagement {
         return titlesOfBooks;
     }
 
-    public static String getPassportId(int readerId){
+    public static String getEmail(int readerId){
         Connector.loadDriver();
         Connection connection = Connector.getConnection();
-        String passportId = OrderDAO.getPassportIdFromDB(readerId, connection);
+        String email = OrderDAO.getEmailFromDB(readerId, connection);
         Connector.closeConnection(connection);
-        return passportId;
+        return email;
     }
 
     public static int getOrderPrice(List<String> titlesOfBooks){
@@ -73,15 +73,15 @@ public class OrderManagement {
         return summaryPrice;
     }
 
-    public static void registerOrderOfReader(String passportID, List<String> titlesOfBooks){
+    public static void registerOrderOfReader(String email, List<String> titlesOfBooks){
         Connector.loadDriver();
         Connection connection = Connector.getConnection();
-        orderRegistration(connection, passportID, titlesOfBooks);
+        orderRegistration(connection, email, titlesOfBooks);
         Connector.closeConnection(connection);
     }
 
-    private static void orderRegistration(Connection connection, String passportID, List<String> titlesOfBooks){
-        int readerId = OrderDAO.getReaderId(connection, passportID);
+    private static void orderRegistration(Connection connection, String email, List<String> titlesOfBooks){
+        int readerId = OrderDAO.getReaderId(connection, email);
         if(OrderDAO.readerReturnedBooks(connection, readerId)) {
             List<Order> orderListOfReader = OrderDAO.getInstanceIdForAllTitlesOfBook(connection, titlesOfBooks, readerId);
             OrderDAO.loadOrderInDB(connection, orderListOfReader);
