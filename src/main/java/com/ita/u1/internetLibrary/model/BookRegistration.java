@@ -5,14 +5,14 @@ import java.time.LocalDate;
 public class BookRegistration {
     private String russianTitle;
     private String originalTitle;
-    private int price;
-    private int pricePerDay;
-    private int yearOfPublishing;
+    private Integer price;
+    private Integer pricePerDay;
+    private Integer yearOfPublishing;
     private LocalDate dateOfRegistration;
-    private int countOfPages;
-    private int countOfInstances;
+    private Integer countOfPages;
+    private Integer countOfInstances;
 
-    public BookRegistration(String russianTitle, String originalTitle, int price, int pricePerDay, int yearOfPublishing, LocalDate dateOfRegistration, int countOfPages, int countOfInstances) {
+    public BookRegistration(String russianTitle, String originalTitle, Integer price, Integer pricePerDay, Integer yearOfPublishing, LocalDate dateOfRegistration, Integer countOfPages, Integer countOfInstances) {
         this.russianTitle = russianTitle;
         this.originalTitle = originalTitle;
         this.price = price;
@@ -39,27 +39,27 @@ public class BookRegistration {
         this.originalTitle = originalTitle;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getPricePerDay() {
+    public Integer getPricePerDay() {
         return pricePerDay;
     }
 
-    public void setPricePerDay(int pricePerDay) {
+    public void setPricePerDay(Integer pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
 
-    public int getYearOfPublishing() {
+    public Integer getYearOfPublishing() {
         return yearOfPublishing;
     }
 
-    public void setYearOfPublishing(int yearOfPublishing) {
+    public void setYearOfPublishing(Integer yearOfPublishing) {
         this.yearOfPublishing = yearOfPublishing;
     }
 
@@ -71,19 +71,19 @@ public class BookRegistration {
         this.dateOfRegistration = dateOfRegistration;
     }
 
-    public int getCountOfPages() {
+    public Integer getCountOfPages() {
         return countOfPages;
     }
 
-    public void setCountOfPages(int countOfPages) {
+    public void setCountOfPages(Integer countOfPages) {
         this.countOfPages = countOfPages;
     }
 
-    public int getCountOfInstances() {
+    public Integer getCountOfInstances() {
         return countOfInstances;
     }
 
-    public void setCountOfInstances(int countOfInstances) {
+    public void setCountOfInstances(Integer countOfInstances) {
         this.countOfInstances = countOfInstances;
     }
 }

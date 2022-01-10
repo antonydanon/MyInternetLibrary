@@ -13,4 +13,11 @@ public class Constants {
     public static int milliseconds = 1000;
 
     public static int emailMaxLength = 100;
+
+    public static int maxLengthOfTitleOfBook = 50;
+    public static int minCountOfPages = 3;
+    public static int minCountOfInstances = 1;
+    public static int minPrice = 0;
+    public static int minYearOfPublication = 0;
+    public static int minSizeOfList = 0;
 }

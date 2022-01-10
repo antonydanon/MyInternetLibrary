@@ -106,16 +106,20 @@ public class BookRegistrationDAO{
                 if(resultSet.next()){
                     author.setAuthorId(resultSet.getInt("author_id"));
                 } else{
-                    sqlQuery = "INSERT INTO authors (photo, name) VALUES ('{";
+                    sqlQuery = "";
 
-                    for (var partOfPhoto: author.getPhotoOfAuthor()){
-                        sqlQuery += partOfPhoto + ",";
+                    if(author.getPhotoOfAuthor() != null) {
+                        sqlQuery = "INSERT INTO authors (photo, name) VALUES ('{";
+                        for (var partOfPhoto : author.getPhotoOfAuthor()) {
+                            sqlQuery += partOfPhoto + ",";
+                        }
+                        sqlQuery = sqlQuery.substring(0, sqlQuery.length() - 2);
+                        sqlQuery = sqlQuery + "}', '" + author.getName() + "')";
+                    } else {
+                        sqlQuery = "INSERT INTO authors (name) VALUES ('" + author.getName() + "')";
                     }
-                    sqlQuery = sqlQuery.substring(0,sqlQuery.length()-2);
-                    sqlQuery = sqlQuery + "}', '" + author.getName() +"')";
                     statement.executeUpdate(sqlQuery);
                     sqlQuery = "SELECT MAX(author_id) FROM authors";
-
                     resultSet = statement.executeQuery(sqlQuery);
                     if(resultSet.next()) {
                         author.setAuthorId(resultSet.getInt("max"));
