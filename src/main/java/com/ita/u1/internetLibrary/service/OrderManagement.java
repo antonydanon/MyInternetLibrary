@@ -80,6 +80,39 @@ public class OrderManagement {
         Connector.closeConnection(connection);
     }
 
+    public static boolean emailAndTitlesOfBooksIsValid(String email, List<String> titlesOfBooks){
+        if(ReaderManagement.emailNotValid(email))
+            return false;
+        if(titlesOfBooksIsNotValid(titlesOfBooks))
+            return false;
+        if(databaseNotContainsTitles(titlesOfBooks)){
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean databaseNotContainsTitles(List<String> titlesOfBooks){
+        Connector.loadDriver();
+        Connection connection = Connector.getConnection();
+        if(OrderDAO.haveSuchTitlesInDB(connection, titlesOfBooks)){
+            Connector.closeConnection(connection);
+            return false;
+        } else {
+            Connector.closeConnection(connection);
+            return true;
+        }
+    }
+
+    private static boolean titlesOfBooksIsNotValid(List<String> titlesOfBooks){
+        if(titlesOfBooks.size() == 0)
+            return true;
+        for (var title : titlesOfBooks) {
+            if(!title.matches("[A-Za-z0-9\s]{1,50}"))
+                return true;
+        }
+        return false;
+    }
+
     private static void orderRegistration(Connection connection, String email, List<String> titlesOfBooks){
         int readerId = OrderDAO.getReaderId(connection, email);
         if(OrderDAO.readerReturnedBooks(connection, readerId)) {

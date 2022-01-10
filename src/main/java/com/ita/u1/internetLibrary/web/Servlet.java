@@ -90,7 +90,9 @@ public class Servlet extends HttpServlet {
 
     protected void registerOrdersOfReaders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<String> titlesOfBooks = getTitlesOfBooks(request);
-        OrderManagement.registerOrderOfReader(request.getParameter("email"), titlesOfBooks);
+        if(OrderManagement.emailAndTitlesOfBooksIsValid(request.getParameter("email"), titlesOfBooks)) {
+            OrderManagement.registerOrderOfReader(request.getParameter("email"), titlesOfBooks);
+        }
         getListOfReadersWithoutDebts(request, response);
     }
 
@@ -110,47 +112,64 @@ public class Servlet extends HttpServlet {
 
     protected void getListOfAvailableBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String[]> params = request.getParameterMap();
-        int readerId = Integer.parseInt(params.get("choice")[0]);
-        List<Book> listOfAvailableBooks = BookManagement. getListOfAvailableBooksFromDB();
-        request.setAttribute("listOfAvailableBooks", listOfAvailableBooks);
-        request.setAttribute("readerId", readerId);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("listOfAvailableBooks.jsp");
-        dispatcher.forward(request, response);
+        if(params.containsKey("choice")){
+            int readerId = Integer.parseInt(params.get("choice")[0]);
+            List<Book> listOfAvailableBooks = BookManagement.getListOfAvailableBooksFromDB();
+            request.setAttribute("listOfAvailableBooks", listOfAvailableBooks);
+            request.setAttribute("readerId", readerId);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("listOfAvailableBooks.jsp");
+            dispatcher.forward(request, response);
+        }else {
+            getListOfReadersWithDebts(request, response);
+        }
     }
 
     protected void openWindowOfOrderRegistration(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int readerId = Integer.parseInt(request.getParameter("readerId"));
-        List<Integer> listOfBooksId = getAllBooksId(request);
-        List<String> titlesOfBooks = OrderManagement.getTitlesOfBooks(listOfBooksId);
-        String email = OrderManagement.getEmail(readerId);
-        LocalDate bookReturnDate = OrderManagement.getReturnDate();
-        int priceOfOrder = OrderManagement.getOrderPrice(titlesOfBooks);
-        request.setAttribute("returnDateOfOrder", bookReturnDate);
-        request.setAttribute("priceOfOrder", priceOfOrder);
-        request.setAttribute("email", email);
-        request.setAttribute("titlesOfBooks", titlesOfBooks);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
-        dispatcher.forward(request, response);
+        Map<String, String[]> params = request.getParameterMap();
+        if(params.containsKey("choiceOfBook")) {
+            int readerId = Integer.parseInt(request.getParameter("readerId"));
+            List<Integer> listOfBooksId = getAllBooksId(request);
+            List<String> titlesOfBooks = OrderManagement.getTitlesOfBooks(listOfBooksId);
+            String email = OrderManagement.getEmail(readerId);
+            LocalDate bookReturnDate = OrderManagement.getReturnDate();
+            int priceOfOrder = OrderManagement.getOrderPrice(titlesOfBooks);
+            request.setAttribute("returnDateOfOrder", bookReturnDate);
+            request.setAttribute("priceOfOrder", priceOfOrder);
+            request.setAttribute("email", email);
+            request.setAttribute("titlesOfBooks", titlesOfBooks);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("bookDistributions.jsp");
+            dispatcher.forward(request, response);
+        }else{
+            getListOfReadersWithoutDebts(request, response);
+        }
     }
 
     protected void openWindowOfBookReturning(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, String[]> params = request.getParameterMap();
-        int readerId = Integer.parseInt(params.get("choice")[0]);
-        String email = OrderManagement.getEmail(readerId);
-        List<String> titlesOfBooks = BookReturningManagement.getTitlesOfBook(readerId);
-        int price =  BookReturningManagement.getFinalPrice(readerId);
-        LocalDate returnDate = LocalDate.now();
-        request.setAttribute("email", email);
-        request.setAttribute("titlesOfBooks", titlesOfBooks);
-        request.setAttribute("price", price);
-        request.setAttribute("returnDate", returnDate);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("returnOfBooks.jsp");
-        dispatcher.forward(request, response);
+        if(!request.getParameter("listOfReadersWithDebts").equals("[]")) {
+            Map<String, String[]> params = request.getParameterMap();
+            int readerId = Integer.parseInt(params.get("choice")[0]);
+            String email = OrderManagement.getEmail(readerId);
+            List<String> titlesOfBooks = BookReturningManagement.getTitlesOfBook(readerId);
+            int price =  BookReturningManagement.getFinalPrice(readerId);
+            LocalDate returnDate = LocalDate.now();
+            request.setAttribute("email", email);
+            request.setAttribute("titlesOfBooks", titlesOfBooks);
+            request.setAttribute("price", price);
+            request.setAttribute("returnDate", returnDate);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("returnOfBooks.jsp");
+            dispatcher.forward(request, response);
+        }else{
+            getListOfReadersWithDebts(request, response);
+        }
     }
 
     protected void makeReturnOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BookReturningManagement.returningOfBooks(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")));
-        getListOfReadersWithDebts(request, response);
+        if(BookReturningManagement.paramsIsNotValid(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")))){
+            getListOfReadersWithDebts(request, response);
+        } else {
+            BookReturningManagement.returningOfBooks(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")));
+            getListOfReadersWithDebts(request, response);
+        }
     }
 
     protected void makeRegistrationOfBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

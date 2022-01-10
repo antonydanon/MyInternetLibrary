@@ -19,7 +19,7 @@
     <div id='header'></div>
     <h1>Return Of Books</h1>
     <form method="post" action="/Servlet" enctype="multipart/form-data">
-        <label>Passport-id of reader</label>
+        <label>Email of reader</label>
         <input type="text" name="email" value="${email}"/>
         <label>Return date</label>
         <input type="date" name="returnDate" value="${returnDate}"/>

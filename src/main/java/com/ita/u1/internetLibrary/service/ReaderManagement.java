@@ -80,7 +80,7 @@ public class ReaderManagement {
             return !snp.matches("[A-Za-z]{1,30}");
     }
 
-    private static boolean emailNotValid(String email){
+    public static boolean emailNotValid(String email){
         return !(email.matches("\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*\\.\\w{2,4}") && email.length() <= Constants.emailMaxLength);
     }
 

@@ -31,6 +31,23 @@ public class OrderDAO {
         return pricesOfBooks;
     }
 
+    public static boolean haveSuchTitlesInDB(Connection connection, List<String> titlesOfBooks){
+        String sqlQuery;
+
+        for (var titleOfBook : titlesOfBooks) {
+            sqlQuery = "SELECT original_name FROM books where original_name = '" + titleOfBook + "';";
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery)){
+                if(!resultSet.next()){
+                    return false;
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return true;
+    }
+
     public static String getEmailFromDB(int readerId, Connection connection){
         String email = "";
         String sqlQuery = "SELECT email FROM readers WHERE readers_id = " + readerId + ";";

@@ -26,7 +26,7 @@
         <th>Year of publication</th>
         <th>Count of instances</th>
         <th>Available</th>
-        <th>Choice</th>>
+        <th>Choice</th>
     </tr>
 
     <c:forEach items="${listOfAvailableBooks}" var="book" >
@@ -36,12 +36,12 @@
             <td>${book.yearOfPublication}</td>
             <td>${book.countOfInstances}</td>
             <td>${book.countOfInstancesAvailable}</td>
-            <td><input type="checkbox" name="choiceOfBook" value="${book.id}"></td>>
+            <td><input type="checkbox" name="choiceOfBook" value="${book.id}"></td>
         </tr>
     </c:forEach>
 </table>
-    <input type="hidden" name="readerId" value="${readerId}"/>
     <input type="submit" name="btnGetWindowOfOrderRegistration" id="btnGetWindowOfOrderRegistration" value="Choose books"/>
+    <input type="hidden" name="readerId" value="${readerId}"/>
 </form>
 </body>
 </html>

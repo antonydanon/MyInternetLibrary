@@ -23,6 +23,14 @@ public class BookReturningManagement {
         Connector.closeConnection(connection);
     }
 
+    public static boolean paramsIsNotValid(String email, int priceForReturnBooks){
+        if(priceForReturnBooks < Constants.minPrice)
+            return true;
+        if(ReaderManagement.emailNotValid(email))
+            return true;
+        return false;
+    }
+
     public static List<String> getTitlesOfBook(int readerId){
         Connector.loadDriver();
         Connection connection = Connector.getConnection();

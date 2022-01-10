@@ -41,6 +41,7 @@
         </c:forEach>
     </table>
     <input type="submit" name="btnGetWindowOfBookReturning" id="btnGetWindowOfBookReturning" value="Choose reader"/>
-</form>>
+    <input type="hidden" name="listOfReadersWithDebts" value="${listOfReadersWithDebts}">
+</form>
 </body>
 </html>
