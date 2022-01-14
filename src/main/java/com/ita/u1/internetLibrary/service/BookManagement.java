@@ -20,7 +20,8 @@ public class BookManagement {
         return listOfBooks;
     }
 
-    public static List<Book> getListOfAvailableBooksFromDB(){
+    public static List<Book>
+    getListOfAvailableBooksFromDB(){
         List<Book> listOfBooks = loadListOfBooksFromDB();
         List<Book> listOfAvailableBooks = new ArrayList<>();
         for (var book : listOfBooks) {

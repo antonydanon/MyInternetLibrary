@@ -6,6 +6,7 @@ public class Constants {
     public static float penalty = 0.01f;
 
     public static int countOfDaysInMonth = 31;
+    public static int countOfDaysForEveryDayMessage = 5;
 
     public static int hours = 24;
     public static int minutes = 60;
@@ -14,10 +15,12 @@ public class Constants {
 
     public static int emailMaxLength = 100;
 
-    public static int maxLengthOfTitleOfBook = 50;
     public static int minCountOfPages = 3;
     public static int minCountOfInstances = 1;
     public static int minPrice = 0;
     public static int minYearOfPublication = 0;
     public static int minSizeOfList = 0;
+
+    public static String fromEmail = "antoxa1423@gmail.com";
+    public static String password = "psnyrujzwlsvmetr";
 }
