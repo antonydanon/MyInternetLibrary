@@ -15,7 +15,7 @@
 <body>
 <header>
     <div class = "logo">
-        <a href = "mainPage.jsp"><img class = "graphicLogo" src = "images\logotype.png" alt = "Logo"></a>
+        <a href = "Servlet?btnGetMainPage"><img class = "graphicLogo" src = "images\logotype.png" alt = "Logo"></a>
     </div>
     <div id = "sidebar">
         <div class = "toggle-btn" onclick = "openMenu()">
