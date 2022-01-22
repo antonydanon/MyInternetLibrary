@@ -18,6 +18,8 @@
 <body>
     <div id='header'></div>
     <h1>list of books</h1>
+
+    <form>
     <table>
         <tr>
             <th>Russian title of the book</th>
@@ -27,7 +29,7 @@
             <th>Available</th>
         </tr>
 
-        <c:forEach items="${listOfBooks}" var="book" >
+        <c:forEach items="${listOfBooksForCurrentPage}" var="book" >
             <tr>
                 <td>${book.russianNameOfBook}</td>
                 <td>${book.genres.get(0)}</td>
@@ -36,7 +38,11 @@
                 <td>${book.countOfInstancesAvailable}</td>
             </tr>
         </c:forEach>
-
     </table>
+        <input type="submit" name="btnGetNextPage" id="btnGetNextPage1" value="  <  "/>
+        <input type="submit" name="btnGetNextPage" id="btnGetNextPage2" value="  >  "/>
+        <input type="hidden" name="currentPage" value="${currentPage}">
+    </form>
+
 </body>
 </html>

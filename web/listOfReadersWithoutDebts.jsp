@@ -42,6 +42,6 @@
     </table>
         <a id="linkOnReaderRegistration" href = "readerRegistration.jsp">Follow the link if the reader is not registered</a>
         <input type="submit" name="btnGetListOfAvailableBooks" id="btnGetListOfAvailableBooks" value="Choose reader"/>
-    </form>>
+    </form>
 </body>
 </html>

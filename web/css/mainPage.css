@@ -5,10 +5,8 @@
 }
 
 table{
-    position: absolute;
-    z-index: 2;
     left: 20%;
-    margin-top: 20px;
+    margin: 20px auto;
     width: 60%;
     border-collapse: collapse;
     border-spacing: 0;
@@ -47,4 +45,26 @@ h1{
     margin-top: 20px;
     text-align: center;
     text-transform: uppercase;
+}
+
+#btnGetNextPage1, #btnGetNextPage2{
+    font-size: 1.0em;
+    list-style: none;
+    color: black;
+    font-family: 'Raleway', sans-serif;
+    height: 30px;
+    background: #dd636e;
+    border: none;
+    border-radius: 10px;
+    margin-left: 310px;
+    box-shadow: 0 2px 15px rgba(64,64,64,.7);
+}
+
+#btnGetNextPage2{
+    margin-left: 10px;
+}
+
+#btnGetNextPage1:hover, #btnGetNextPage2:hover{
+    background: #b7e4fc;
+    cursor: pointer;
 }

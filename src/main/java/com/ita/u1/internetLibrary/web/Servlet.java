@@ -20,7 +20,7 @@ public class Servlet extends HttpServlet {
         if(params.containsKey("btnGetListReaders")) {
             loadListOfReaders(request, response);
         }
-        if(params.containsKey("btnGetMainPage")) {
+        if(params.containsKey("btnGetMainPage") || params.containsKey("btnGetNextPage")) {
             loadListOfBooks(request, response);
         }
         if(params.containsKey("requestOnOrder")) {
@@ -82,8 +82,17 @@ public class Servlet extends HttpServlet {
     }
 
     protected void loadListOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String, String[]> params = request.getParameterMap();
         List<Book> listOfBooks = BookManagement.loadListOfBooksFromDB();
-        request.setAttribute("listOfBooks", listOfBooks);
+        int currentPage = BookManagement.getCurrentPage(params, request.getParameter("btnGetNextPage"), request.getParameter("currentPage"));
+        int countOfPages = BookManagement.getCountOfPages(listOfBooks);
+        if(currentPage > countOfPages)
+            currentPage = countOfPages;
+        if(currentPage < 1)
+            currentPage = 1;
+        List<Book> listOfBooksForCurrentPage = BookManagement.getListOfBooksForCurrentPage(listOfBooks, currentPage);
+        request.setAttribute("listOfBooksForCurrentPage", listOfBooksForCurrentPage);
+        request.setAttribute("currentPage", currentPage);
         RequestDispatcher dispatcher = request.getRequestDispatcher("mainPage.jsp");
         dispatcher.forward(request, response);
     }
