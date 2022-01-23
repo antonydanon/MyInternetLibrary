@@ -18,24 +18,40 @@
 <body>
     <div id='header'></div>
     <h1>Return Of Books</h1>
+    <div class = "input-forms">
     <form method="post" action="/Servlet" enctype="multipart/form-data">
-        <label>Email of reader</label>
-        <input type="text" name="email" value="${email}"/>
-        <label>Return date</label>
-        <input type="date" name="returnDate" value="${returnDate}"/>
-        <label>Price</label>
-        <input type="text" name="priceForReturningBooks" value="${price}"/>
-        <label>Return books</label>
-        <c:forEach items="${titlesOfBooks}" var="title">
-            <label>Title</label>
-            <input type="text" name="book" value="${title}"/>
-            <label>Rating</label>
-            <input type="number" name="rating"/>
-            <label>Photos with violations</label>
-            <input type="file" name = "photoOfViolations">
-            <input type="file" name = "photoOfViolations">
-        </c:forEach>
-        <input type="submit" name="returnBooks" value="Return Books">
+        <div class="group">
+            <label>Email of reader</label>
+            <input type="text" class = "input" name="email" value="${email}" readonly/>
+        </div>
+        <div class="group">
+            <label>Return date</label>
+            <input type="date" class = "input" name="returnDate" value="${returnDate}" readonly/>
+        </div>
+        <div class="group">
+            <label>Price</label>
+            <input type="text" class = "input" name="priceForReturningBooks" value="${price}" readonly/>
+        </div>
+        <div>
+            <label>Return books</label>
+            <c:forEach items="${titlesOfBooks}" var="title">
+            <div class="group">
+                <label>Title</label>
+                <input type="text" class = "input"  name="book" value="${title}" readonly/>
+            </div>
+            <div class="group">
+                <label>Rating</label>
+                <input type="number" class = "input"  name="rating" pattern="[0-9]{0,2}" min="0" max="10" title="An integer from 0 to 10!"/>
+            </div>
+            <div class="group">
+                <label>Photos with violations</label>
+                <input type="file" id="pht1"  name = "photoOfViolations">
+                <input type="file" id="pht2" name = "photoOfViolations">
+            </div>
+            </c:forEach>
+            <input type="submit" id="btn" class = "input" name="returnBooks" value="Return Books">
+        </div>
     </form>
+    </div>
 </body>
 </html>

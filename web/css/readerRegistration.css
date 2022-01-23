@@ -9,7 +9,7 @@ body{
 
 .input-forms{
     background: #f5de87;
-    height: 600px;
+    height: auto;
     width: 30%;
     margin: 30px auto;
     padding: 20px;

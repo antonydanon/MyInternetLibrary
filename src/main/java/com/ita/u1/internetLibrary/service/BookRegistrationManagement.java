@@ -116,7 +116,7 @@ public class BookRegistrationManagement {
     }
 
     private static boolean bookIsNotValid(BookRegistration book){
-        if(!book.getRussianTitle().matches("([A-Za-z0-9\s]{1,50})"))
+        if(!book.getRussianTitle().matches("([А-Яа-я0-9\s]{1,50})"))
             return true;
         if(!book.getOriginalTitle().matches("([A-Za-z0-9\s]{1,50})|"))
             return true;

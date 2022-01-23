@@ -18,19 +18,31 @@
 <body>
     <div id='header'></div>
     <h1>Book Distributions</h1>
+    <div class = "input-forms">
     <form method="get" action="/Servlet">
-        <label>Email of reader</label>
-        <input type="text" name="email"  value="${email}"/>
-        <label>Books for reader</label>
-        <c:forEach items="${titlesOfBooks}" var="title" >
-            <input type="text" name="book" value="${title}"/>
-        </c:forEach>
-        <label>Return Date</label>
-        <input type="text"  value="${returnDateOfOrder}">
-        <label>Price</label>
-        <input type="text"  value="${priceOfOrder}">
-        <input type="submit" name="requestOnOrder" value="Sent request">
-        <input type="hidden" name="titles" value="${titlesOfBooks}"/>
+        <div class="group">
+            <label>Email of reader</label>
+            <input type="text"  class = "input" name="email"  value="${email}" readonly/>
+        </div>
+        <div class="group">
+            <label>Books for reader</label>
+            <c:forEach items="${titlesOfBooks}" var="title" >
+                <div id="book">
+                <input type="text"  class = "input" name="book" value="${title}" readonly/>
+                </div>
+            </c:forEach>
+        </div>
+        <div class="group">
+            <label>Return Date</label>
+            <input type="text"  class = "input" value="${returnDateOfOrder}" readonly>
+        </div>
+        <div class="group">
+            <label>Price</label>
+            <input type="text"  class = "input" value="${priceOfOrder}" readonly>
+            <input type="submit"  class = "input" id="btn" name="requestOnOrder" value="Make distribution">
+            <input type="hidden" name="titles" value="${titlesOfBooks}"/>
+        </div>
     </form>
+    </div>
 </body>
 </html>

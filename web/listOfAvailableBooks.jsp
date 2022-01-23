@@ -18,7 +18,7 @@
 <body>
 <div id='header'></div>
 <h1>list of available books</h1>
-<form method="get" action="/Servlet">
+<form name="form1" method="get" action="/Servlet">
 <table>
     <tr>
         <th>Russian title of the book</th>
@@ -42,6 +42,9 @@
 </table>
     <input type="submit" name="btnGetWindowOfOrderRegistration" id="btnGetWindowOfOrderRegistration" value="Choose books"/>
     <input type="hidden" name="readerId" value="${readerId}"/>
+    <div>
+        <span id="notvalid"></span>
+    </div>
 </form>
 </body>
 </html>

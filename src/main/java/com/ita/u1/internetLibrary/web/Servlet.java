@@ -21,6 +21,9 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String[]> params = request.getParameterMap();
+        if(params.containsKey("btnReaderRegistration")){
+            openReaderRegistration(request, response);
+        }
         if(params.containsKey("btnGetListReaders")) {
             loadListOfReaders(request, response);
         }
@@ -67,6 +70,11 @@ public class Servlet extends HttpServlet {
     protected void openBookRegistration(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setAttribute("dateOfRegistration", LocalDate.now());
         RequestDispatcher dispatcher = request.getRequestDispatcher("bookRegistration.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    protected void openReaderRegistration(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        RequestDispatcher dispatcher = request.getRequestDispatcher("readerRegistration.jsp");
         dispatcher.forward(request, response);
     }
 

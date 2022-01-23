@@ -22,17 +22,17 @@
         <div>
             <div class = "group">
                 <label>Surname</label>
-                <input id = "inpSurname" class = "input" name = "surname" type = "text" required/>
+                <input id = "inpSurname" class = "input" name = "surname" type = "text" pattern="[A-Za-z]{1,30}" title="Only letters, no more than 30!" required/>
                 <div id = "mistakeSurname"></div>
             </div>
             <div class = "group">
                 <label>Name</label>
-                <input id = "inpName" class = "input" name = "name" type = "text" required/>
+                <input id = "inpName" class = "input" name = "name" type = "text" pattern="[A-Za-z]{1,30}" title="Only letters, no more than 30!" required/>
                 <div id = "mistakeName"></div>
             </div>
             <div class = "group">
                 <label>Patronymic</label>
-                <input id = "inpPatronymic" class = "input" name = "patronymic" type = "text"/>
+                <input id = "inpPatronymic" class = "input" name = "patronymic" pattern="([A-Za-z]{1,30})|" title="Only letters, no more than 30!" type = "text"/>
                 <div id = "mistakePatronymic"></div>
             </div>
         </div>
@@ -44,19 +44,19 @@
             </div>
             <div class = "group">
                 <label>Email</label>
-                <input id = "inpEmail" class = "input" name = "email" type = "text"  required/>
+                <input id = "inpEmail" class = "input" name = "email" type = "text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Enter the name of the correct unique mail!" required/>
                 <div id = "mistakeEmail"></div>
             </div>
             <div class = "group">
                 <label>Passport-id</label>
-                <input id = "inpPassport-id" class = "input" name = "passport-id" type = "text"/>
+                <input id = "inpPassport-id" class = "input" name = "passport-id" pattern="[A-Z]{2}[0-9]{7}|" title="The first two characters are capital letters, the other seven are numbers!" type = "text"/>
                 <div id = "mistakePassport-id"></div>
             </div>
         </div>
         <div>
             <div class = "group">
                 <label>Address</label>
-                <input id = "inpAddress" class = "input" name = "address" type = "text"/>
+                <input id = "inpAddress" class = "input" name = "address" pattern="[A-Za-z0-9 ]{2,100}|" title="Enter the correct address of letters and numbers, no more than 100 and no less than 2 characters!" type = "text"/>
                 <div id = "mistakeAddress"></div>
                 <input class = "input" id = "btn" type = "submit" value="Confirm"/>
             </div>

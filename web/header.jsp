@@ -30,7 +30,11 @@
                 <input id = "btnGetMainPage" type = "submit" name = "btnGetMainPage" value="Main Page"/>
             </form>
             </li>
-            <li><a href = "readerRegistration.jsp">Reader Registration</a></li>
+            <li>
+                <form method="get" action="/Servlet">
+                    <input id = "btnReaderRegistration" type = "submit" name = "btnReaderRegistration" value="Reader Registration"/>
+                </form>
+            </li>
             <li>
                 <form method="get" action="/Servlet">
                     <input id = "btnGetReadersListWithDebts" type = "submit" name = "btnGetReadersListWithDebts" value="Return Of Books"/>

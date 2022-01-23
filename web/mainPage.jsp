@@ -17,11 +17,39 @@
 </head>
 <body>
     <div id='header'></div>
+
+    <table id="btnTable">
+        <tr class="btnTr">
+            <td class="btnTd">
+                <form method="get" action="/Servlet">
+                    <input id = "btnReaderRegistration" class="btnInput" type = "submit" name = "btnReaderRegistration" value="Reader Registration"/>
+                </form>
+            </td>
+            <td class="btnTd">
+                <form method="get" action="/Servlet">
+                    <input id = "btnGetBookRegistration" class="btnInput" type = "submit" name = "btnGetBookRegistration" value="Book Registration"/>
+                </form>
+            </td>
+        </tr>
+        <tr class="btnTr">
+            <td class="btnTd">
+                <form method="get" action="/Servlet">
+                    <input id = "btnGetReadersListWithDebts" class="btnInput" type = "submit" name = "btnGetReadersListWithDebts" value="Return Of Books"/>
+                </form>
+            </td>
+            <td class="btnTd">
+                <form method="get" action="/Servlet">
+                    <input id = "btnGetReadersListWithoutDebts" class="btnInput" type = "submit" name = "btnGetListReadersWithoutDebts" value="Book Distributions"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+
     <h1>list of books</h1>
 
-    <table>
+    <table id="tableOfBooks">
         <form>
-        <tr>
+        <tr class="bookTr">
             <th>
                 <input type="submit" name="btnSort" class="sort" value="Russian title of the book"/>
                 <input type="hidden" name="isAscForTitle" value="${isAscForTitle}">
@@ -48,12 +76,12 @@
         </form>
 
         <c:forEach items="${listOfBooksForCurrentPage}" var="book" >
-            <tr>
-                <td>${book.russianNameOfBook}</td>
-                <td>${book.genres.get(0)}</td>
-                <td>${book.yearOfPublication}</td>
-                <td>${book.countOfInstances}</td>
-                <td>${book.countOfInstancesAvailable}</td>
+            <tr class="bookTr">
+                <td class="bookTd">${book.russianNameOfBook}</td>
+                <td class="bookTd">${book.genres.get(0)}</td>
+                <td class="bookTd">${book.yearOfPublication}</td>
+                <td class="bookTd">${book.countOfInstances}</td>
+                <td class="bookTd">${book.countOfInstancesAvailable}</td>
             </tr>
         </c:forEach>
     </table>

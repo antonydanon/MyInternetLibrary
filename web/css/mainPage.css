@@ -4,7 +4,7 @@
     outline: 0;
 }
 
-table{
+#tableOfBooks{
     left: 20%;
     margin: 20px auto;
     width: 60%;
@@ -16,12 +16,17 @@ table{
     background: #fafafa;
 }
 
-td, th{
+#btnTable{
+    left:40%;
+    margin: 20px auto;
+    width: 20%;
+}
+
+.bookTd, th, .btnTd{
     padding: 15px 20px;
     text-align: center;
-
-
 }
+
 th{
     background-color: #b7e4fc;
     color: #fafafa;
@@ -31,13 +36,13 @@ th{
 
 }
 
-tr{
+.bookTr{
     width: 100%;
     background-color: #fafafa;
     font-family: 'Montserrat', sans-serif;
 }
 
-tr:nth-child(even){
+.bookTr:nth-child(even){
     background-color: #eeeeee;
 }
 
@@ -60,11 +65,24 @@ h1{
     box-shadow: 0 2px 15px rgba(64,64,64,.7);
 }
 
+.btnInput{
+    box-shadow: 0 2px 15px rgba(64,64,64,.7);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.0em;
+    list-style: none;
+    color: black;
+    font-family: 'Raleway', sans-serif;
+    height: 30px;
+    background: #f5de87;
+    width: 200px;
+}
+
 #btnGetNextPage2{
     margin-left: 10px;
 }
 
-#btnGetNextPage1:hover, #btnGetNextPage2:hover{
+#btnGetNextPage1:hover, #btnGetNextPage2:hover, .btnInput:hover{
     background: #b7e4fc;
     cursor: pointer;
 }

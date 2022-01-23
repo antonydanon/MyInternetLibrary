@@ -50,7 +50,7 @@ body{
 }
 
 
-#btnGetMainPage, #btnGetReadersList, #btnGetReadersListWithoutDebts, #btnGetReadersListWithDebts, #btnGetBookRegistration{
+#sidebar ul li form input{
     font-size: 1.0em;
     list-style: none;
     color: #dfe5eb;
