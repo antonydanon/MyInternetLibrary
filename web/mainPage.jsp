@@ -19,15 +19,33 @@
     <div id='header'></div>
     <h1>list of books</h1>
 
-    <form>
     <table>
+        <form>
         <tr>
-            <th>Russian title of the book</th>
-            <th>Genre</th>
-            <th>Year of publication</th>
-            <th>Count of instances</th>
-            <th>Available</th>
+            <th>
+                <input type="submit" name="btnSort" class="sort" value="Russian title of the book"/>
+                <input type="hidden" name="isAscForTitle" value="${isAscForTitle}">
+            </th>
+            <th>
+                <input type="submit" name="btnSort" class="sort" value="Genre"/>
+                <input type="hidden" name="isAscForGenre" value="${isAscForGenre}">
+            </th>
+            <th>
+                <input type="submit" name="btnSort" class="sort" value="Year of publication"/>
+                <input type="hidden" name="isAscForYear" value="${isAscForYear}">
+
+            </th>
+            <th>
+                <input type="submit" name="btnSort" class="sort" value="Count of instances"/>
+                <input type="hidden" name="isAscForInstances" value="${isAscForInstances}">
+
+            </th>
+            <th>
+                <input type="submit" name="btnSort" class="sort" value="Available"/>
+                <input type="hidden" name="isAscForAvailable" value="${isAscForAvailable}">
+            </th>
         </tr>
+        </form>
 
         <c:forEach items="${listOfBooksForCurrentPage}" var="book" >
             <tr>
@@ -39,9 +57,11 @@
             </tr>
         </c:forEach>
     </table>
+    <form>
         <input type="submit" name="btnGetNextPage" id="btnGetNextPage1" value="  <  "/>
         <input type="submit" name="btnGetNextPage" id="btnGetNextPage2" value="  >  "/>
         <input type="hidden" name="currentPage" value="${currentPage}">
+        <label>${currentPage}</label>
     </form>
 
 </body>

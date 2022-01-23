@@ -10,17 +10,21 @@ import java.time.LocalDate;
 import java.util.*;
 
 import com.ita.u1.internetLibrary.model.*;
+import com.ita.u1.internetLibrary.model.additional.BooleanHolder;
 import com.ita.u1.internetLibrary.service.*;
 
 @MultipartConfig
 public class Servlet extends HttpServlet {
+
+    static List<Book> listWithBooks = new ArrayList<>();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String[]> params = request.getParameterMap();
         if(params.containsKey("btnGetListReaders")) {
             loadListOfReaders(request, response);
         }
-        if(params.containsKey("btnGetMainPage") || params.containsKey("btnGetNextPage")) {
+        if(params.containsKey("btnGetMainPage") || params.containsKey("btnGetNextPage") || params.containsKey("btnSort")) {
             loadListOfBooks(request, response);
         }
         if(params.containsKey("requestOnOrder")) {
@@ -83,7 +87,28 @@ public class Servlet extends HttpServlet {
 
     protected void loadListOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String[]> params = request.getParameterMap();
-        List<Book> listOfBooks = BookManagement.loadListOfBooksFromDB();
+        BooleanHolder isAscForTitle = new BooleanHolder(true);
+        BooleanHolder isAscForGenre = new BooleanHolder(true);
+        BooleanHolder isAscForYear = new BooleanHolder(true);
+        BooleanHolder isAscForInstances = new BooleanHolder(true);
+        BooleanHolder isAscForAvailable = new BooleanHolder(true);
+        List<Book> listOfBooks;
+        if(params.containsKey("btnGetMainPage")) {
+            listOfBooks = BookManagement.loadListOfBooksFromDB();
+        } else {
+            listOfBooks = listWithBooks;
+        }
+        if(!params.containsKey("btnGetMainPage")) {
+            isAscForTitle.value = Boolean.parseBoolean(request.getParameter("isAscForTitle"));
+            isAscForGenre.value = Boolean.parseBoolean(request.getParameter("isAscForGenre"));
+            isAscForYear.value = Boolean.parseBoolean(request.getParameter("isAscForYear"));
+            isAscForInstances.value = Boolean.parseBoolean(request.getParameter("isAscForInstances"));
+            isAscForAvailable.value = Boolean.parseBoolean(request.getParameter("isAscForAvailable"));
+        }
+        if(params.containsKey("btnSort"))
+            listOfBooks = BookManagement.sortListOfBooks(listOfBooks, request.getParameter("btnSort"),
+                    isAscForTitle, isAscForGenre, isAscForYear, isAscForInstances, isAscForAvailable);
+
         int currentPage = BookManagement.getCurrentPage(params, request.getParameter("btnGetNextPage"), request.getParameter("currentPage"));
         int countOfPages = BookManagement.getCountOfPages(listOfBooks);
         if(currentPage > countOfPages)
@@ -91,8 +116,14 @@ public class Servlet extends HttpServlet {
         if(currentPage < 1)
             currentPage = 1;
         List<Book> listOfBooksForCurrentPage = BookManagement.getListOfBooksForCurrentPage(listOfBooks, currentPage);
+        listWithBooks = listOfBooks;
         request.setAttribute("listOfBooksForCurrentPage", listOfBooksForCurrentPage);
         request.setAttribute("currentPage", currentPage);
+        request.setAttribute("isAscForTitle", isAscForTitle.value);
+        request.setAttribute("isAscForGenre", isAscForGenre.value);
+        request.setAttribute("isAscForYear", isAscForYear.value);
+        request.setAttribute("isAscForInstances", isAscForInstances.value);
+        request.setAttribute("isAscForAvailable", isAscForAvailable.value);
         RequestDispatcher dispatcher = request.getRequestDispatcher("mainPage.jsp");
         dispatcher.forward(request, response);
     }

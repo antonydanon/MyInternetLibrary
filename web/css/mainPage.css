@@ -68,3 +68,16 @@ h1{
     background: #b7e4fc;
     cursor: pointer;
 }
+
+.sort{
+    border: none;
+    color: black;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.0em;
+    background: #b7e4fc;
+}
+
+.sort:hover{
+    cursor: pointer;
+}
+

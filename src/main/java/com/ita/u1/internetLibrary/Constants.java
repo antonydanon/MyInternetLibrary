@@ -24,5 +24,5 @@ public class Constants {
     public static String fromEmail = "antoxa1423@gmail.com";
     public static String password = "psnyrujzwlsvmetr";
 
-    public static int countOfRecordsForPage = 3;
+    public static int countOfRecordsForPage = 20;
 }

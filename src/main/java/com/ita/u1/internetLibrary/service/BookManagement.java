@@ -4,14 +4,92 @@ import com.ita.u1.internetLibrary.Constants;
 import com.ita.u1.internetLibrary.dao.BookDAO;
 import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.model.Book;
-import com.ita.u1.internetLibrary.model.Reader;
+import com.ita.u1.internetLibrary.model.additional.BooleanHolder;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BookManagement {
+    public static List<Book> sortListOfBooks(List<Book> listOfBooks, String sortParam, BooleanHolder
+            isAscForTitle, BooleanHolder isAscForGenre, BooleanHolder isAscForYear, BooleanHolder isAscForInstances, BooleanHolder isAscForAvailable){
+        if(sortParam.equals("Russian title of the book")){
+            listOfBooks = sortByTitle(listOfBooks, isAscForTitle);
+        }
+        if(sortParam.equals("Genre")){
+            listOfBooks = sortByGenre(listOfBooks, isAscForGenre);
+        }
+        if(sortParam.equals("Year of publication")){
+            listOfBooks = sortByYear(listOfBooks, isAscForYear);
+        }
+        if(sortParam.equals("Count of instances")){
+            listOfBooks = sortByInstances(listOfBooks, isAscForInstances);
+        }
+        if(sortParam.equals("Available")){
+            listOfBooks = sortByAvailable(listOfBooks, isAscForAvailable);
+        }
+        return listOfBooks;
+    }
+
+    private static List<Book> sortByGenre(List<Book> listOfBooks, BooleanHolder isAscForGenre){
+        if(isAscForGenre.value) {
+            listOfBooks.sort((o1, o2) -> o1.getGenres().get(0).compareTo(o2.getGenres().get(0)));
+            isAscForGenre.value = false;
+        }
+        else {
+            listOfBooks.sort((o1, o2) -> o2.getGenres().get(0).compareTo(o1.getGenres().get(0)));
+            isAscForGenre.value = true;
+        }
+        return listOfBooks;
+    }
+
+    private static List<Book> sortByYear(List<Book> listOfBooks, BooleanHolder isAscForYear){
+        if(isAscForYear.value) {
+            listOfBooks.sort((o1, o2) -> o1.getYearOfPublication() - o2.getYearOfPublication());
+            isAscForYear.value = false;
+        }
+        else {
+            listOfBooks.sort((o1, o2) -> o2.getYearOfPublication() - o1.getYearOfPublication());
+            isAscForYear.value = true;
+        }
+        return listOfBooks;
+    }
+
+    private static List<Book> sortByInstances(List<Book> listOfBooks, BooleanHolder isAscForInstances){
+        if(isAscForInstances.value) {
+            listOfBooks.sort((o1, o2) -> o1.getCountOfInstances() - o2.getCountOfInstances());
+            isAscForInstances.value = false;
+        }
+        else {
+            listOfBooks.sort((o1, o2) -> o2.getCountOfInstances() - o1.getCountOfInstances());
+            isAscForInstances.value = true;
+        }
+        return listOfBooks;
+    }
+
+    private static List<Book> sortByAvailable(List<Book> listOfBooks, BooleanHolder isAscForInstances){
+        if(isAscForInstances.value) {
+            listOfBooks.sort((o1, o2) -> o1.getCountOfInstancesAvailable() - o2.getCountOfInstancesAvailable());
+            isAscForInstances.value = false;
+        }
+        else {
+            listOfBooks.sort((o1, o2) -> o2.getCountOfInstancesAvailable() - o1.getCountOfInstancesAvailable());
+            isAscForInstances.value = true;
+        }
+        return listOfBooks;
+    }
+
+    private static List<Book> sortByTitle(List<Book> listOfBooks, BooleanHolder isAscForAvailable){
+        if(isAscForAvailable.value) {
+            listOfBooks.sort((o1, o2) -> o1.getRussianNameOfBook().compareTo(o2.getRussianNameOfBook()));
+            isAscForAvailable.value = false;
+        }
+        else {
+            listOfBooks.sort((o1, o2) -> o2.getRussianNameOfBook().compareTo(o1.getRussianNameOfBook()));
+            isAscForAvailable.value = true;
+        }
+        return listOfBooks;
+    }
+
     public static int getCurrentPage(Map<String, String[]> params, String buttonParam, String currPageParam){
         int currentPage;
         if(params.containsKey("currentPage") && buttonParam.equals("  >  ") ) {
@@ -42,7 +120,9 @@ public class BookManagement {
     public static int getCountOfPages(List<Book> listOfBooks){
         int countOfPages = listOfBooks.size() / Constants.countOfRecordsForPage;
         int checkLastPage = listOfBooks.size() % Constants.countOfRecordsForPage;
-        return countOfPages+checkLastPage;
+        if(checkLastPage > 0)
+            return countOfPages + 1;
+        return countOfPages;
     }
 
     public static List<Book> loadListOfBooksFromDB(){
