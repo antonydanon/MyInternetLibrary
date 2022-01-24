@@ -13,6 +13,18 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningDAO{
+    public static void changePrices( List<BookReturning> bookWithNewPrices, Connection connection){
+        String sqlQuery;
+        for (int i = 0; i < bookWithNewPrices.size(); i++) {
+            sqlQuery = "  UPDATE books SET price = " + bookWithNewPrices.get(i).getNewPrice() + " WHERE original_name = '" + bookWithNewPrices.get(i).getTitle() + "'";
+            try(Statement statement = connection.createStatement()){
+                statement.executeUpdate(sqlQuery);
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     public static void makePayment(Connection connection, int price, int readerId){
         String sqlQuery = "INSERT INTO book_returning (date_returning, price, fk_book_returning_readers)" +
                 " VALUES ('" + LocalDate.now() + "',"  + price + "," + readerId + ")";

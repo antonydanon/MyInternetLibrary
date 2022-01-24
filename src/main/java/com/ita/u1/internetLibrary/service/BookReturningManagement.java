@@ -4,6 +4,7 @@ import com.ita.u1.internetLibrary.Constants;
 import com.ita.u1.internetLibrary.dao.BookReturningDAO;
 import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.dao.OrderDAO;
+import com.ita.u1.internetLibrary.model.Book;
 import com.ita.u1.internetLibrary.model.BookReturning;
 import com.ita.u1.internetLibrary.model.PriceOfBook;
 
@@ -14,25 +15,28 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningManagement {
-    public static void returningOfBooks(String email, int price, List<BookReturning> booksForReturn){
+    public static void returningOfBooks(String email, int price, List<BookReturning> booksForReturn, int penalty){
         int readerId = 0;
         Connector.loadDriver();
         Connection connection = Connector.getConnection();
         List<BookReturning> booksWithRating = getBooksWithRating(booksForReturn);
-        List<Integer> countsOfRatings;
-        List<Integer> sumOfRatings;
+        List<BookReturning> booksWithNewPrice = getBooksWithNewPrice(booksForReturn);
         if(!booksWithRating.isEmpty()){
-            countsOfRatings = BookReturningDAO.getCountOfRating(booksWithRating, connection);
-            sumOfRatings = BookReturningDAO.getSumOfRating(booksWithRating, connection);
+            List<Integer> countsOfRatings = BookReturningDAO.getCountOfRating(booksWithRating, connection);
+            List<Integer> sumOfRatings = BookReturningDAO.getSumOfRating(booksWithRating, connection);
             BookReturningDAO.updateCountOfRating(booksWithRating, countsOfRatings, connection);
             BookReturningDAO.updateSumOfRating(booksWithRating, sumOfRatings, connection);
         }
         readerId = OrderDAO.getReaderId(connection, email);
-        BookReturningDAO.makePayment(connection, price, readerId);
+        BookReturningDAO.makePayment(connection, price+penalty, readerId);
         BookReturningDAO.makeInstancesAvailable(connection, readerId);
         BookReturningDAO.deleteOrders(connection, readerId);
+        if(!booksWithNewPrice.isEmpty()){
+            BookReturningDAO.changePrices(booksWithNewPrice, connection);
+        }
         Connector.closeConnection(connection);
     }
+
     private static List<BookReturning> getBooksWithRating(List<BookReturning>  booksForReturn){
         List<BookReturning> booksWithRating = new ArrayList<>();
         for (var book : booksForReturn){
@@ -42,12 +46,23 @@ public class BookReturningManagement {
         return booksWithRating;
     }
 
-    public static boolean paramsIsNotValid(String email, int priceForReturnBooks, List<BookReturning> booksForReturn){
+    private static List<BookReturning> getBooksWithNewPrice(List<BookReturning>  booksForReturn){
+        List<BookReturning> booksWithNewPrice = new ArrayList<>();
+        for (var book : booksForReturn){
+            if(book.getNewPrice() > -1)
+                booksWithNewPrice.add(book);
+        }
+        return booksWithNewPrice;
+    }
+
+    public static boolean paramsIsNotValid(String email, int priceForReturnBooks, List<BookReturning> booksForReturn, int penalty){
         if(priceForReturnBooks < Constants.minPrice)
             return true;
         if(ReaderManagement.emailNotValid(email))
             return true;
         if(booksForReturnNotValid(booksForReturn))
+            return true;
+        if(penalty < 0)
             return true;
         return false;
     }
@@ -59,6 +74,8 @@ public class BookReturningManagement {
             if(bookForReturn.getRating() < -1 || bookForReturn.getRating() > 10)
                 return true;
             if(!bookForReturn.getTitle().matches("([A-Za-z0-9\s]{1,50})"))
+                return true;
+            if(bookForReturn.getNewPrice() < -1)
                 return true;
         }
         return false;

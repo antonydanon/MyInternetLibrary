@@ -48,7 +48,15 @@
                 <input type="file" id="pht1"  name = "photoOfViolations">
                 <input type="file" id="pht2" name = "photoOfViolations">
             </div>
+            <div class="group">
+                <label>New price of book</label>
+                <input type="number" class = "input"  name="newPrice" pattern="[0-9]+" min="0" max="999999" title="An integer from 0 to 999999!"/>
+            </div>
             </c:forEach>
+            <div class="group">
+                <label>Penalty</label>
+                <input type="number" class = "input"  name="penalty" pattern="[0-9]+" min="0" max="999999" title="An integer from 0 to 999999!"/>
+            </div>
             <input type="submit" id="btn" class = "input" name="returnBooks" value="Return Books">
         </div>
     </form>

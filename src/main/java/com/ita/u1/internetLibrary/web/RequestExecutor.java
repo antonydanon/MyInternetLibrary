@@ -119,16 +119,25 @@ public class RequestExecutor {
         Collections.addAll(books, params.get("book"));
         List<String> ratings = new ArrayList<>();
         Collections.addAll(ratings, params.get("rating"));
+        List<String> newPrices = new ArrayList<>();
+        Collections.addAll(newPrices, params.get("newPrice"));
+        int penalty = 0;
+        if(!request.getParameter("penalty").equals(""))
+            penalty = Integer.parseInt(request.getParameter("penalty"));
         for(int i = 0; i < books.size(); i++){
             if(ratings.get(i).equals(""))
                 booksForReturn.add(new BookReturning(books.get(i), -1));
             else
                 booksForReturn.add(new BookReturning(books.get(i), Integer.parseInt(ratings.get(i))));
+            if(newPrices.get(i).equals(""))
+                booksForReturn.get(i).setNewPrice(-1);
+            else
+                booksForReturn.get(i).setNewPrice(Integer.parseInt(newPrices.get(i)));
         }
-        if(BookReturningManagement.paramsIsNotValid(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")), booksForReturn)){
+        if(BookReturningManagement.paramsIsNotValid(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")), booksForReturn, penalty)){
             getListOfReadersWithDebts(request, response);
         } else {
-            BookReturningManagement.returningOfBooks(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")), booksForReturn);
+            BookReturningManagement.returningOfBooks(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")), booksForReturn, penalty);
             getListOfReadersWithDebts(request, response);
         }
     }

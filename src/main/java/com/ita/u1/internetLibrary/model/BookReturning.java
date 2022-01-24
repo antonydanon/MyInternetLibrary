@@ -3,6 +3,7 @@ package com.ita.u1.internetLibrary.model;
 public class BookReturning {
     private String title;
     private int rating;
+    private int newPrice;
 
     public BookReturning(String title, int rating) {
         this.title = title;
@@ -23,5 +24,13 @@ public class BookReturning {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public int getNewPrice() {
+        return newPrice;
+    }
+
+    public void setNewPrice(int newPrice) {
+        this.newPrice = newPrice;
     }
 }
