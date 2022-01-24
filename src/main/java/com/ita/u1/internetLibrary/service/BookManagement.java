@@ -105,6 +105,7 @@ public class BookManagement {
         }
         return currentPage;
     }
+
     public static List<Book> getListOfBooksForCurrentPage(List<Book> listOfBooks, int currentPage){
         List<Book> listOfBooksForCurrentPage = new ArrayList<>();
         int endPosition = Constants.countOfRecordsForPage * currentPage;
@@ -132,8 +133,18 @@ public class BookManagement {
         BookDAO.selectTitleAndYearForBooks(listOfBooks, connection);
         BookDAO.selectCountOfInstancesForBooks(listOfBooks, connection);
         BookDAO.selectGenreForBooks(listOfBooks, connection);
+        sortListOfBooksByAvailableAndRussianTitle(listOfBooks);
         Connector.closeConnection(connection);
         return listOfBooks;
+    }
+
+    public static void sortListOfBooksByAvailableAndRussianTitle(List<Book> listOfBooks){
+        listOfBooks.sort((o1, o2) -> {
+            if(o1.getCountOfInstancesAvailable() - o2.getCountOfInstancesAvailable() == 0)
+                return o1.getRussianNameOfBook().compareTo(o2.getRussianNameOfBook());
+            else
+                return o1.getCountOfInstancesAvailable() - o2.getCountOfInstancesAvailable();
+        });
     }
 
     public static List<Book>

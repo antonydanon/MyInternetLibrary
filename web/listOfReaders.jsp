@@ -19,15 +19,32 @@
     <div id='header'></div>
     <h1>list of readers</h1>
     <table>
+        <form>
         <tr>
-            <th>Surname</th>
-            <th>Name</th>
-            <th>Birthday</th>
-            <th>Address</th>
-            <th>Email</th>
+            <th>
+                <input type="submit" name="btnSortReaders" class="sort" value="Surname"/>
+                <input type="hidden" name="isAscForSurname" value="${isAscForSurname}">
+            </th>
+            <th>
+                <input type="submit" name="btnSortReaders" class="sort" value="Name"/>
+                <input type="hidden" name="isAscForName" value="${isAscForName}">
+            </th>
+            <th>
+                <input type="submit" name="btnSortReaders" class="sort" value="Birthday"/>
+                <input type="hidden" name="isAscForBirthday" value="${isAscForBirthday}">
+            </th>
+            <th>
+                <input type="submit" name="btnSortReaders" class="sort" value="Address"/>
+                <input type="hidden" name="isAscForAddress" value="${isAscForAddress}">
+            </th>
+            <th>
+                <input type="submit" name="btnSortReaders" class="sort" value="Email"/>
+                <input type="hidden" name="isAscForEmail" value="${isAscForEmail}">
+            </th>
         </tr>
+        </form>
 
-            <c:forEach items="${listOfReaders}" var="reader" >
+            <c:forEach items="${listOfReadersForCurrentPage}" var="reader" >
                 <tr>
                     <td>${reader.surname}</td>
                     <td>${reader.name}</td>
@@ -36,7 +53,12 @@
                     <td>${reader.email}</td>
                 </tr>
             </c:forEach>
-
     </table>
+    <form>
+        <input type="submit" name="btnGetNextPageReaders" id="btnGetNextPage1" value="  <  "/>
+        <input type="submit" name="btnGetNextPageReaders" id="btnGetNextPage2" value="  >  "/>
+        <input type="hidden" name="currentPageReaders" value="${currentPage}">
+        <label>${currentPage}</label>
+    </form>
 </body>
 </html>

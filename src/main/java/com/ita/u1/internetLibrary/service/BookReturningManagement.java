@@ -4,30 +4,63 @@ import com.ita.u1.internetLibrary.Constants;
 import com.ita.u1.internetLibrary.dao.BookReturningDAO;
 import com.ita.u1.internetLibrary.dao.Connector;
 import com.ita.u1.internetLibrary.dao.OrderDAO;
+import com.ita.u1.internetLibrary.model.BookReturning;
 import com.ita.u1.internetLibrary.model.PriceOfBook;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BookReturningManagement {
-    public static void returningOfBooks(String email, int price){
+    public static void returningOfBooks(String email, int price, List<BookReturning> booksForReturn){
         int readerId = 0;
         Connector.loadDriver();
         Connection connection = Connector.getConnection();
+        List<BookReturning> booksWithRating = getBooksWithRating(booksForReturn);
+        List<Integer> countsOfRatings;
+        List<Integer> sumOfRatings;
+        if(!booksWithRating.isEmpty()){
+            countsOfRatings = BookReturningDAO.getCountOfRating(booksWithRating, connection);
+            sumOfRatings = BookReturningDAO.getSumOfRating(booksWithRating, connection);
+            BookReturningDAO.updateCountOfRating(booksWithRating, countsOfRatings, connection);
+            BookReturningDAO.updateSumOfRating(booksWithRating, sumOfRatings, connection);
+        }
         readerId = OrderDAO.getReaderId(connection, email);
         BookReturningDAO.makePayment(connection, price, readerId);
         BookReturningDAO.makeInstancesAvailable(connection, readerId);
         BookReturningDAO.deleteOrders(connection, readerId);
         Connector.closeConnection(connection);
     }
+    private static List<BookReturning> getBooksWithRating(List<BookReturning>  booksForReturn){
+        List<BookReturning> booksWithRating = new ArrayList<>();
+        for (var book : booksForReturn){
+            if(book.getRating() > -1)
+                booksWithRating.add(book);
+        }
+        return booksWithRating;
+    }
 
-    public static boolean paramsIsNotValid(String email, int priceForReturnBooks){
+    public static boolean paramsIsNotValid(String email, int priceForReturnBooks, List<BookReturning> booksForReturn){
         if(priceForReturnBooks < Constants.minPrice)
             return true;
         if(ReaderManagement.emailNotValid(email))
             return true;
+        if(booksForReturnNotValid(booksForReturn))
+            return true;
+        return false;
+    }
+
+    private static boolean booksForReturnNotValid(List<BookReturning> booksForReturn){
+        if(booksForReturn.size() < 1)
+            return true;
+        for (var bookForReturn : booksForReturn) {
+            if(bookForReturn.getRating() < -1 || bookForReturn.getRating() > 10)
+                return true;
+            if(!bookForReturn.getTitle().matches("([A-Za-z0-9\s]{1,50})"))
+                return true;
+        }
         return false;
     }
 

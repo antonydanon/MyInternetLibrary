@@ -17,6 +17,7 @@ import com.ita.u1.internetLibrary.service.*;
 public class Servlet extends HttpServlet {
 
     static List<Book> listWithBooks = new ArrayList<>();
+    static List<Reader> listWithReaders = new ArrayList<>();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,7 +25,7 @@ public class Servlet extends HttpServlet {
         if(params.containsKey("btnReaderRegistration")){
             openReaderRegistration(request, response);
         }
-        if(params.containsKey("btnGetListReaders")) {
+        if(params.containsKey("btnGetListReaders") || params.containsKey("btnGetNextPageReaders") || params.containsKey("btnSortReaders")) {
             loadListOfReaders(request, response);
         }
         if(params.containsKey("btnGetMainPage") || params.containsKey("btnGetNextPage") || params.containsKey("btnSort")) {
@@ -87,8 +88,44 @@ public class Servlet extends HttpServlet {
     }
 
     protected void loadListOfReaders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        List<Reader> listOfReaders = ReaderManagement.loadListOfReadersFromDB();
-        request.setAttribute("listOfReaders", listOfReaders);
+        Map<String, String[]> params = request.getParameterMap();
+        BooleanHolder isAscForSurname = new BooleanHolder(true);
+        BooleanHolder isAscForName = new BooleanHolder(true);
+        BooleanHolder isAscForBirthday = new BooleanHolder(true);
+        BooleanHolder isAscForAddress = new BooleanHolder(true);
+        BooleanHolder isAscForEmail = new BooleanHolder(true);
+        List<Reader> listOfReaders;
+        if(params.containsKey("btnGetListReaders")) {
+            listOfReaders = ReaderManagement.loadListOfReadersFromDB();
+        } else {
+            listOfReaders = listWithReaders;
+        }
+        if(!params.containsKey("btnGetListReaders")) {
+            isAscForSurname.value = Boolean.parseBoolean(request.getParameter("isAscForSurname"));
+            isAscForName.value = Boolean.parseBoolean(request.getParameter("isAscForName"));
+            isAscForBirthday.value = Boolean.parseBoolean(request.getParameter("isAscForBirthday"));
+            isAscForAddress.value = Boolean.parseBoolean(request.getParameter("isAscForAddress"));
+            isAscForEmail.value = Boolean.parseBoolean(request.getParameter("isAscForEmail"));
+        }
+        if(params.containsKey("btnSortReaders"))
+            listOfReaders = ReaderManagement.sortListOfReaders(listOfReaders, request.getParameter("btnSortReaders"),
+                    isAscForSurname, isAscForName, isAscForBirthday, isAscForAddress, isAscForEmail);
+
+        int currentPage = ReaderManagement.getCurrentPage(params, request.getParameter("btnGetNextPageReaders"), request.getParameter("currentPageReaders"));
+        int countOfPages = ReaderManagement.getCountOfPages(listOfReaders);
+        if(currentPage > countOfPages)
+            currentPage = countOfPages;
+        if(currentPage < 1)
+            currentPage = 1;
+        List<Reader> listOfReadersForCurrentPage = ReaderManagement.getListOfReadersForCurrentPage(listOfReaders, currentPage);
+        listWithReaders = listOfReaders;
+        request.setAttribute("listOfReadersForCurrentPage", listOfReadersForCurrentPage);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("isAscForSurname", isAscForSurname.value);
+        request.setAttribute("isAscForName", isAscForName.value);
+        request.setAttribute("isAscForBirthday", isAscForBirthday.value);
+        request.setAttribute("isAscForAddress", isAscForAddress.value);
+        request.setAttribute("isAscForEmail", isAscForEmail.value);
         RequestDispatcher dispatcher = request.getRequestDispatcher("listOfReaders.jsp");
         dispatcher.forward(request, response);
     }
@@ -212,10 +249,22 @@ public class Servlet extends HttpServlet {
     }
 
     protected void makeReturnOfBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(BookReturningManagement.paramsIsNotValid(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")))){
+        Map<String, String[]> params = request.getParameterMap();
+        List<BookReturning> booksForReturn = new ArrayList<>();
+        List<String> books = new ArrayList<>();
+        Collections.addAll(books, params.get("book"));
+        List<String> ratings = new ArrayList<>();
+        Collections.addAll(ratings, params.get("rating"));
+        for(int i = 0; i < books.size(); i++){
+            if(ratings.get(i).equals(""))
+                booksForReturn.add(new BookReturning(books.get(i), -1));
+            else
+                booksForReturn.add(new BookReturning(books.get(i), Integer.parseInt(ratings.get(i))));
+        }
+        if(BookReturningManagement.paramsIsNotValid(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")), booksForReturn)){
             getListOfReadersWithDebts(request, response);
         } else {
-            BookReturningManagement.returningOfBooks(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")));
+            BookReturningManagement.returningOfBooks(request.getParameter("email"), Integer.parseInt(request.getParameter("priceForReturningBooks")), booksForReturn);
             getListOfReadersWithDebts(request, response);
         }
     }

@@ -1,5 +1,6 @@
 package com.ita.u1.internetLibrary.dao;
 
+import com.ita.u1.internetLibrary.model.BookReturning;
 import com.ita.u1.internetLibrary.model.PriceOfBook;
 
 import java.sql.Connection;
@@ -21,6 +22,66 @@ public class BookReturningDAO{
             System.out.println(e.getMessage());
         }
     }
+
+    public static List<Integer> getCountOfRating(List<BookReturning> booksWithRating, Connection connection){
+        List<Integer> countsOfRatings = new ArrayList<>();
+        String sqlQuery;
+        for (var book : booksWithRating) {
+            sqlQuery = "SELECT count_rating FROM books WHERE original_name = '" + book.getTitle() + "'";
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery)){
+                while(resultSet.next()){
+                    countsOfRatings.add(resultSet.getInt("count_rating"));
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return countsOfRatings;
+    }
+
+    public static List<Integer> getSumOfRating(List<BookReturning> booksWithRating, Connection connection){
+        List<Integer> sumOfRatings = new ArrayList<>();
+        String sqlQuery;
+        for (var book : booksWithRating) {
+            sqlQuery = "SELECT sum_rating FROM books WHERE original_name = '" + book.getTitle() + "'";
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery)){
+                while(resultSet.next()){
+                    sumOfRatings.add(resultSet.getInt("sum_rating"));
+                }
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return sumOfRatings;
+    }
+
+   public static void updateCountOfRating(List<BookReturning> booksWithRating, List<Integer> countsOfRatings, Connection connection){
+        String sqlQuery;
+       for (int i = 0; i < booksWithRating.size(); i++) {
+           sqlQuery = "  UPDATE books SET count_rating = " + (countsOfRatings.get(i)+1) + " WHERE original_name = '" + booksWithRating.get(i).getTitle() + "'";
+           try(Statement statement = connection.createStatement()){
+               statement.executeUpdate(sqlQuery);
+           } catch (SQLException e){
+               System.out.println(e.getMessage());
+           }
+       }
+   }
+
+    public static void updateSumOfRating(List<BookReturning> booksWithRating, List<Integer> sumOfRatings, Connection connection){
+        String sqlQuery;
+        for (int i = 0; i < booksWithRating.size(); i++) {
+            sqlQuery = "  UPDATE books SET sum_rating = " + (sumOfRatings.get(i)+booksWithRating.get(i).getRating()) + " WHERE original_name = '" + booksWithRating.get(i).getTitle() + "'";
+            try(Statement statement = connection.createStatement()){
+                statement.executeUpdate(sqlQuery);
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+
 
     public static List<String> getTitlesOfBookFromDB(int readerId, Connection connection){
         List<String> titlesOfBooks = new ArrayList<>();

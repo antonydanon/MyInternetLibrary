@@ -25,7 +25,7 @@
         </div>
         <div class="group">
             <label>Original title</label>
-            <input type="text" class = "input" name="originalTitle" pattern="([A-Za-z0-9s]{1,50})|" title="Only integers and letters, no more than 50!" />
+            <input type="text" class = "input" name="originalTitle" pattern="([A-Za-z0-9s]{1,50})" title="Only integers and letters, no more than 50!" required/>
         </div>
         <div class="group">
             <label>Genres</label>

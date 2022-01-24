@@ -54,7 +54,7 @@ public class ReaderDAO {
     }
 
     static public void selectAllReaders(List<Reader> listOfReaders){
-        String sqlQuery = "SELECT readers_id, surname, name, birthday, address, email FROM readers";
+        String sqlQuery = "SELECT readers_id, surname, name, birthday, address, email FROM readers ORDER BY surname";
         Connector.loadDriver();
         try(Connection connection = Connector.getConnection();
             Statement statement = connection.createStatement();
