@@ -19,7 +19,7 @@
     <div id='header'></div>
     <h1>list of readers</h1>
     <table>
-        <form>
+        <form method="get" action="/Servlet">
         <tr>
             <th>
                 <input type="submit" name="btnSortReaders" class="sort" value="Surname"/>
@@ -54,7 +54,7 @@
                 </tr>
             </c:forEach>
     </table>
-    <form>
+    <form method="get" action="/Servlet">
         <input type="submit" name="btnGetNextPageReaders" id="btnGetNextPage1" value="  <  "/>
         <input type="submit" name="btnGetNextPageReaders" id="btnGetNextPage2" value="  >  "/>
         <input type="hidden" name="currentPageReaders" value="${currentPage}">

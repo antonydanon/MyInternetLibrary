@@ -1,6 +1,5 @@
 package com.ita.u1.internetLibrary.dao;
 
-import com.ita.u1.internetLibrary.Constants;
 import com.ita.u1.internetLibrary.model.MessageForReader;
 
 import java.sql.Connection;

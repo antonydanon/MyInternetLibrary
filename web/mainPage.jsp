@@ -48,7 +48,7 @@
     <h1>list of books</h1>
 
     <table id="tableOfBooks">
-        <form>
+        <form method="get" action="/Servlet">
         <tr class="bookTr">
             <th>
                 <input type="submit" name="btnSort" class="sort" value="Russian title of the book"/>
@@ -85,7 +85,7 @@
             </tr>
         </c:forEach>
     </table>
-    <form>
+    <form method="get" action="/Servlet">
         <input type="submit" name="btnGetNextPage" id="btnGetNextPage1" value="  <  "/>
         <input type="submit" name="btnGetNextPage" id="btnGetNextPage2" value="  >  "/>
         <input type="hidden" name="currentPage" value="${currentPage}">

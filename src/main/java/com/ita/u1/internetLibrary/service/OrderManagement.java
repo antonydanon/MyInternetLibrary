@@ -34,16 +34,10 @@ public class OrderManagement {
     }
 
     public static int getOrderPrice(List<String> titlesOfBooks){
-        validationOfOrders(titlesOfBooks);
         List<PriceOfBook> pricesOfBooks = loadPricesOfBooksFromDB(titlesOfBooks);
         float discount = getDiscount(pricesOfBooks);
         int orderPrice = getSummaryPrice(discount, pricesOfBooks);
         return orderPrice;
-    }
-
-    private static List<String> validationOfOrders(List<String> titlesOfBooks){
-        //TODO: make a validation
-        return titlesOfBooks;
     }
 
     public static float getDiscount(List<PriceOfBook> pricesOfBooks){

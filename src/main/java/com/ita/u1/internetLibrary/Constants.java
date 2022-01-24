@@ -25,4 +25,14 @@ public class Constants {
     public static String password = "psnyrujzwlsvmetr";
 
     public static int countOfRecordsForPage = 20;
+
+    public static String mainPage = "mainPage.jsp";
+    public static String listOfReaders = "listOfReaders.jsp";
+    public static String returnOfBooks = "returnOfBooks.jsp";
+    public static String bookDistributions = "bookDistributions.jsp";
+    public static String bookRegistration = "bookRegistration.jsp";
+    public static String readerRegistration = "readerRegistration.jsp";
+    public static String listOfAvailableBooks = "listOfAvailableBooks.jsp";
+    public static String listOfReadersWithDebts = "listOfReadersWithDebts.jsp";
+    public static String listOfReadersWithoutDebts = "listOfReadersWithoutDebts.jsp";
 }
