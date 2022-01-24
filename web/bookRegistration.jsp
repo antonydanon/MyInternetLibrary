@@ -21,11 +21,11 @@
     <form action="/Servlet" method="post" enctype="multipart/form-data">
         <div class="group">
             <label>Russian title</label>
-            <input type="text" class = "input" name="russianTitle" pattern="[А-Яа-я0-9s]{1,50}" title="Only integers and Russian letters, no more than 50!" required/>
+            <input type="text" class = "input" name="russianTitle" pattern="[А-Яа-яA-Za-z0-9 ]{1,50}" title="Only integers and letters, no more than 50!" required/>
         </div>
         <div class="group">
             <label>Original title</label>
-            <input type="text" class = "input" name="originalTitle" pattern="([A-Za-z0-9s]{1,50})" title="Only integers and letters, no more than 50!" required/>
+            <input type="text" class = "input" name="originalTitle" pattern="([A-Za-z0-9 ]{1,50})" title="Only integers and letters, no more than 50!" required/>
         </div>
         <div class="group">
             <label>Genres</label>
